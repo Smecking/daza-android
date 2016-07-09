@@ -14,7 +14,21 @@
  * limitations under the License.
  */
 
-package io.daza.app.model;
+package io.daza.app.util;
 
-public class Notification extends Model {
+import io.daza.app.model.User;
+
+public class Auth {
+
+    public static boolean check() {
+        return false;
+    }
+
+    public static User user() {
+        return null;
+    }
+
+    public static int id() {
+        return 0;
+    }
 }
