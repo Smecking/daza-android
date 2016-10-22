@@ -16,5 +16,5 @@
 
 package io.daza.app.model;
 
-public class EventComment extends Model {
+public class ArticleTag extends Model {
 }

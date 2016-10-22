@@ -16,34 +16,5 @@
 
 package io.daza.app.model;
 
-public class TweetComment extends Model {
-
-    private int user_id;    // 用户Id
-    private int tweet_id;   // 推文Id
-    private int content;    // 内容
-
-    public int getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
-    }
-
-    public int getTweet_id() {
-        return tweet_id;
-    }
-
-    public void setTweet_id(int tweet_id) {
-        this.tweet_id = tweet_id;
-    }
-
-    public int getContent() {
-        return content;
-    }
-
-    public void setContent(int content) {
-        this.content = content;
-    }
-
+public class Category extends Model {
 }

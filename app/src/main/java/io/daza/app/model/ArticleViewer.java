@@ -16,34 +16,5 @@
 
 package io.daza.app.model;
 
-public class EventMember extends Model {
-
-    private int user_id;        // 用户Id
-    private int event_id;       // 活动Id
-    private String joined_at;   // 加入时间
-
-    public int getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
-    }
-
-    public int getEvent_id() {
-        return event_id;
-    }
-
-    public void setEvent_id(int event_id) {
-        this.event_id = event_id;
-    }
-
-    public String getJoined_at() {
-        return joined_at;
-    }
-
-    public void setJoined_at(String joined_at) {
-        this.joined_at = joined_at;
-    }
-
+public class ArticleViewer extends Model {
 }

@@ -16,5 +16,5 @@
 
 package io.daza.app.model;
 
-public class EventLike extends Model {
+public class Asset extends Model {
 }
