@@ -16,14 +16,76 @@
 
 package io.daza.app;
 
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 
-public class AppStart extends AppCompatActivity {
+import io.daza.app.ui.HomeActivity;
+
+public class AppStart extends AppCompatActivity implements Animation.AnimationListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_start);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        setContentView(layoutResID, 0.9f, 1f, 2000);
+    }
+
+    public void setContentView(int layoutResID, float fromAlpha, float toAlpha, long durationMillis) {
+        // 启动面隐藏4.x的虚拟按键
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                int uiOptions = getWindow().getDecorView().getSystemUiVisibility();
+                int newUiOptions = uiOptions;
+                // Navigation bar hiding:  Backwards compatible to ICS.
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    newUiOptions ^= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+                }
+                // Status bar hiding: Backwards compatible to Jellybean
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    newUiOptions ^= View.SYSTEM_UI_FLAG_FULLSCREEN;
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                    newUiOptions ^= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                }
+                getWindow().getDecorView().setSystemUiVisibility(newUiOptions);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        final View view = View.inflate(this, layoutResID, null);
+        setContentView(view);
+
+        AlphaAnimation anim = new AlphaAnimation(fromAlpha, toAlpha);
+        anim.setDuration(durationMillis);
+        anim.setAnimationListener(this);
+        view.startAnimation(anim);
+    }
+
+    @Override
+    public void onAnimationStart(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animation animation) {
+        Intent intent = new Intent(this, HomeActivity.class);
+        this.startActivity(intent);
+        this.finish();
+    }
+
+    @Override
+    public void onAnimationRepeat(Animation animation) {
+
     }
 }

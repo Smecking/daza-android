@@ -9,13 +9,67 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AppStart">
+        <activity
+            android:name=".AppStart"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.HomeActivity" />
+        <activity
+            android:name=".ui.AboutActivity"
+            android:label="@string/title_activity_about" />
+        <activity
+            android:name=".ui.AccountActivity"
+            android:label="@string/title_activity_account" />
+        <activity
+            android:name=".ui.ArticleCommentCreateActivity"
+            android:label="@string/title_activity_article_comment_create" />
+        <activity
+            android:name=".ui.ArticleCommentsActivity"
+            android:label="@string/title_activity_article_comments" />
+        <activity
+            android:name=".ui.ArticleDetailActivity"
+            android:label="@string/title_activity_article_detail" />
+        <activity
+            android:name=".ui.ArticleLikesActivity"
+            android:label="@string/title_activity_article_likes" />
+        <activity
+            android:name=".ui.InAppBrowserActivity"
+            android:label="@string/title_activity_inapp_browser" />
+        <activity
+            android:name=".ui.ModifyPasswordActivity"
+            android:label="@string/title_activity_modify_password" />
+        <activity
+            android:name=".ui.ModifyProfileActivity"
+            android:label="@string/title_activity_modify_profile" />
+        <activity
+            android:name=".ui.NotificationSettingsActivity"
+            android:label="@string/title_activity_notification_settings" />
+        <activity
+            android:name=".ui.OwnSubscribesActivity"
+            android:label="@string/title_activity_own_subscribes" />
+        <activity
+            android:name=".ui.OwnTopicsActivity"
+            android:label="@string/title_activity_own_topics" />
+        <activity
+            android:name=".ui.OwnUpvoteArticlesActivity"
+            android:label="@string/title_activity_own_upvote_articles" />
+        <activity
+            android:name=".ui.SearchActivity"
+            android:label="@string/title_activity_search" />
+        <activity
+            android:name=".ui.TagDetailActivity"
+            android:label="@string/title_activity_tag_detail" />
+        <activity
+            android:name=".ui.TopicDetailActivity"
+            android:label="@string/title_activity_topic_detail" />
+        <activity
+            android:name=".ui.UserDetailActivity"
+            android:label="@string/title_activity_user_detail" />
     </application>
 
 </manifest>

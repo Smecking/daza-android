@@ -21,11 +21,11 @@ import android.os.Bundle;
 
 import io.daza.app.R;
 
-public class ArticleCommentsActivity extends AppCompatActivity {
+public class OwnTopicsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_acticle_comments);
+        setContentView(R.layout.activity_own_topics);
     }
 }

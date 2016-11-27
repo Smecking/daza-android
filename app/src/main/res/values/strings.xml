@@ -1,3 +1,27 @@
 <resources>
-    <string name="app_name">DAZA</string>
+    <string name="app_name">daza.io</string>
+
+    <string name="title_activity_about">关于我们</string>
+    <string name="title_activity_account">账号与安全</string>
+    <string name="title_activity_article_comment_create">写评论</string>
+    <string name="title_activity_article_comments">评论列表</string>
+    <string name="title_activity_article_detail">文章详情</string>
+    <string name="title_activity_article_likes">点赞者列表</string>
+    <string name="title_activity_inapp_browser">InAppBrowser</string>
+    <string name="title_activity_modify_profile">修改个人资料</string>
+    <string name="title_activity_modify_password">修改账号密码</string>
+    <string name="title_activity_notification_settings">消息设置</string>
+    <string name="title_activity_own_subscribes">TA订阅的</string>
+    <string name="title_activity_own_topics">TA的主题</string>
+    <string name="title_activity_own_upvote_articles">TA赞过的</string>
+    <string name="title_activity_search">搜索</string>
+    <string name="title_activity_tag_detail">标签详情</string>
+    <string name="title_activity_topic_detail">主题详情</string>
+    <string name="title_activity_user_detail">用户资料</string>
+
+    <string name="action_tab_index">首页</string>
+    <string name="action_tab_explore">探索</string>
+    <string name="action_tab_inbox">消息</string>
+    <string name="action_tab_mine">我的</string>
+
 </resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_tab_index"
+        android:icon="@mipmap/ic_tab_index"
+        android:title="@string/action_tab_index" />
+    <item
+        android:id="@+id/action_tab_explore"
+        android:icon="@mipmap/ic_tab_explore"
+        android:title="@string/action_tab_explore" />
+    <item
+        android:id="@+id/action_tab_inbox"
+        android:icon="@mipmap/ic_tab_inbox"
+        android:title="@string/action_tab_inbox" />
+    <item
+        android:id="@+id/action_tab_mine"
+        android:icon="@mipmap/ic_tab_mine"
+        android:title="@string/action_tab_mine" />
+</menu>

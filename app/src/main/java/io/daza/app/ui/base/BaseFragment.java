@@ -16,8 +16,6 @@
 
 package io.daza.app.ui.base;
 
-import android.support.v4.app.Fragment;
-
-public class BaseFragment extends Fragment {
+public class BaseFragment extends org.blankapp.app.BaseFragment {
 
 }
