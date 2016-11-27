@@ -17,4 +17,59 @@
 package io.daza.app.model;
 
 public class Category extends Model {
+
+    private String slug;        // Slug
+    private String name;        // 名称
+    private String image_url;   // 图片链接（原始尺寸）
+    private String description; // 描述
+    private int topic_count;    // 主题数
+    private int article_count;  // 文章数
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getTopic_count() {
+        return topic_count;
+    }
+
+    public void setTopic_count(int topic_count) {
+        this.topic_count = topic_count;
+    }
+
+    public int getArticle_count() {
+        return article_count;
+    }
+
+    public void setArticle_count(int article_count) {
+        this.article_count = article_count;
+    }
 }

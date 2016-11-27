@@ -17,4 +17,24 @@
 package io.daza.app.model;
 
 public class ArticleTag extends Model {
+
+    private int article_id; // 文章Id
+    private String name;    // 名称
+
+    public int getArticle_id() {
+        return article_id;
+    }
+
+    public void setArticle_id(int article_id) {
+        this.article_id = article_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }

@@ -18,9 +18,12 @@ package io.daza.app.model;
 
 public class Tag extends Model {
 
-    private String name;        // 名称
-    private String image_url;   // 图片网址
-    private String description; // 描述
+    private String name;            // 名称
+    private String slug;            // Slug
+    private String standard_name;   // 标准名称
+    private String image_url;       // 图片链接（原始尺寸）
+    private String description;     // 描述
+    private int article_count;      // 文章数
 
     public String getName() {
         return name;
@@ -28,6 +31,22 @@ public class Tag extends Model {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    public String getStandard_name() {
+        return standard_name;
+    }
+
+    public void setStandard_name(String standard_name) {
+        this.standard_name = standard_name;
     }
 
     public String getImage_url() {
@@ -46,4 +65,11 @@ public class Tag extends Model {
         this.description = description;
     }
 
+    public int getArticle_count() {
+        return article_count;
+    }
+
+    public void setArticle_count(int article_count) {
+        this.article_count = article_count;
+    }
 }

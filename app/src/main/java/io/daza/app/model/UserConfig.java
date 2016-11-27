@@ -17,4 +17,32 @@
 package io.daza.app.model;
 
 public class UserConfig extends Model {
+
+    private int user_id;    // 用户Id
+    private String key;     // Key
+    private String value;   // Value
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

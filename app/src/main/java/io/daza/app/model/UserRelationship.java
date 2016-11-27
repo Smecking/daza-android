@@ -17,4 +17,23 @@
 package io.daza.app.model;
 
 public class UserRelationship extends Model {
+
+    private int user_id;        // 用户Id
+    private int target_user_id; // 目标用户Id
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public int getTarget_user_id() {
+        return target_user_id;
+    }
+
+    public void setTarget_user_id(int target_user_id) {
+        this.target_user_id = target_user_id;
+    }
 }

@@ -18,12 +18,60 @@ package io.daza.app.model;
 
 public class Topic extends Model {
 
-    private String type;            // 类型
-    private String source_program;  // 来源程序 = ['wordpress', 'jekyll', 'ghost', 'hexo', 'typecho', 'farbox']
-    private String source_link;     // 来源链接
+
+    private String short_id;        // ShortId
+    private int user_id;            // 用户Id
+    private int category_id;        // 分类Id
     private String name;            // 名称
-    private String image_url;       // 图片网址
+    private String slug;            // Slug
+    private String type;            // 类型 = ['feed', 'original', 'official'
+    private String website;         // 主页
+    private String image_url;       // 图片链接（原始尺寸）
     private String description;     // 描述
+    private String source_format;   // 文章来源格式 = ['daza+json', 'atom+xml', 'rss+xml']
+    private String source_link;     // 文章来源链接
+    private int article_count;      // 文章数
+    private int subscriber_count;   // 订阅数
+
+    public String getShort_id() {
+        return short_id;
+    }
+
+    public void setShort_id(String short_id) {
+        this.short_id = short_id;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public int getCategory_id() {
+        return category_id;
+    }
+
+    public void setCategory_id(int category_id) {
+        this.category_id = category_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
 
     public String getType() {
         return type;
@@ -33,28 +81,12 @@ public class Topic extends Model {
         this.type = type;
     }
 
-    public String getSource_program() {
-        return source_program;
+    public String getWebsite() {
+        return website;
     }
 
-    public void setSource_program(String source_program) {
-        this.source_program = source_program;
-    }
-
-    public String getSource_link() {
-        return source_link;
-    }
-
-    public void setSource_link(String source_link) {
-        this.source_link = source_link;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
     public String getImage_url() {
@@ -73,4 +105,35 @@ public class Topic extends Model {
         this.description = description;
     }
 
+    public String getSource_format() {
+        return source_format;
+    }
+
+    public void setSource_format(String source_format) {
+        this.source_format = source_format;
+    }
+
+    public String getSource_link() {
+        return source_link;
+    }
+
+    public void setSource_link(String source_link) {
+        this.source_link = source_link;
+    }
+
+    public int getArticle_count() {
+        return article_count;
+    }
+
+    public void setArticle_count(int article_count) {
+        this.article_count = article_count;
+    }
+
+    public int getSubscriber_count() {
+        return subscriber_count;
+    }
+
+    public void setSubscriber_count(int subscriber_count) {
+        this.subscriber_count = subscriber_count;
+    }
 }
