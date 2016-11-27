@@ -14,36 +14,17 @@
  * limitations under the License.
  */
 
-package io.daza.app.ui;
+package io.daza.app.ui.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Button;
-import android.widget.EditText;
 
-import org.blankapp.validation.Rule;
-import org.blankapp.validation.Validator;
-
-import io.daza.app.R;
-
-public class RegisterActivity extends AppCompatActivity {
-
-    private EditText mEdtUsername;
-    private EditText mEdtEmail;
-    private EditText mEdtPassword;
-    private Button mBtnSubmit;
+public class BaseListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-
-        Validator validator = new Validator();
-
-        validator.add(Rule.with(mEdtUsername).required().alphaDash().minLength(6).maxLength(32));
-        validator.add(Rule.with(mEdtEmail).required().email());
-        validator.add(Rule.with(mEdtPassword).required().minLength(6).maxLength(32));
     }
 
 }
