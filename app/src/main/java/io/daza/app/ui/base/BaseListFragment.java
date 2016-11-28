@@ -16,8 +16,42 @@
 
 package io.daza.app.ui.base;
 
-import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
+import android.view.ViewGroup;
 
-public class BaseListFragment extends Fragment {
+import org.blankapp.app.ListFragment;
 
+
+public class BaseListFragment<VH extends RecyclerView.ViewHolder, Item, Result> extends
+        ListFragment<VH, Item, Result> {
+
+    @Override
+    public void onRefresh() {
+
+    }
+
+    @Override
+    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
+        return null;
+    }
+
+    @Override
+    public void onLoadStart() {
+
+    }
+
+    @Override
+    public Result onLoadInBackground() throws Exception {
+        return null;
+    }
+
+    @Override
+    public void onLoadComplete(Result data) {
+
+    }
+
+    @Override
+    public void onLoadError(Exception e) {
+
+    }
 }

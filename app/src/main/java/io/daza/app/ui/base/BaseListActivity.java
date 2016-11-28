@@ -18,13 +18,54 @@ package io.daza.app.ui.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 
-public class BaseListActivity extends AppCompatActivity {
+import org.blankapp.app.ListActivity;
+
+public abstract class BaseListActivity<VH extends RecyclerView.ViewHolder, Item, Result> extends
+        ListActivity<VH, Item, Result> {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(false);
+        }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRefresh() {
+
+    }
+
+    @Override
+    public void onLoadStart() {
+
+    }
+
+    @Override
+    public Result onLoadInBackground() throws Exception {
+        return null;
+    }
+
+    @Override
+    public void onLoadComplete(Result data) {
+
+    }
+
+    @Override
+    public void onLoadError(Exception e) {
+
+    }
 }

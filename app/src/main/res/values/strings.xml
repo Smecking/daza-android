@@ -18,6 +18,7 @@
     <string name="title_activity_tag_detail">标签详情</string>
     <string name="title_activity_topic_detail">主题详情</string>
     <string name="title_activity_user_detail">用户资料</string>
+    <string name="title_activity_login">登录</string>
 
     <string name="action_tab_index">首页</string>
     <string name="action_tab_explore">探索</string>

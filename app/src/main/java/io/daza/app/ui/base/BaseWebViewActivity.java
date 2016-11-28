@@ -16,15 +16,105 @@
 
 package io.daza.app.ui.base;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
+
+import org.blankapp.util.ViewUtils;
+
+import java.util.Map;
+
+import io.daza.app.R;
 
 public class BaseWebViewActivity extends AppCompatActivity {
+
+    private WebView mWebView;
+    private ProgressBar mProgressBar;
+
+    public WebViewClient mWebViewClient = new WebViewClient() {
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            BaseWebViewActivity.this.onPageStarted(view, url, favicon);
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            BaseWebViewActivity.this.onPageFinished(view, url);
+        }
+
+        @Override
+        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+            BaseWebViewActivity.this.onReceivedError(view, errorCode, description, failingUrl);
+        }
+    };
+
+    public WebChromeClient mWebChromeClient = new WebChromeClient() {
+        public void onProgressChanged(WebView view, int newProgress) {
+            BaseWebViewActivity.this.onProgressChanged(view, newProgress);
+        }
+
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            BaseWebViewActivity.this.onReceivedTitle(view, title);
+        }
+
+    };
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void setContentView(@LayoutRes int layoutResID) {
+        super.setContentView(layoutResID);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+    }
+
+    @Override
+    public void onContentChanged() {
+        super.onContentChanged();
+        mWebView = (WebView) findViewById(R.id.webview);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressbar);
+        mWebView.setWebViewClient(mWebViewClient);
+        mWebView.setWebChromeClient(mWebChromeClient);
+    }
+
+    public void loadUrl(java.lang.String url, Map<String, String> additionalHttpHeaders) {
+        mWebView.loadUrl(url, additionalHttpHeaders);
+    }
+
+    public void loadUrl(java.lang.String url) {
+        mWebView.loadUrl(url);
+    }
+
+    public void onPageStarted(WebView view, String url, Bitmap favicon) {
+    }
+
+    public void onPageFinished(WebView view, String url) {
+    }
+
+    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+    }
+
+    public void onProgressChanged(WebView view, int newProgress) {
+        if (mProgressBar != null) {
+            mProgressBar.setMax(100);
+            mProgressBar.setProgress(newProgress);
+            // 如果进度大于或者等于100，则隐藏进度条
+            ViewUtils.setGone(mProgressBar, newProgress >= 100);
+        }
+    }
+
+    public void onReceivedTitle(WebView view, String title) {
+        setTitle(title);
+    }
 }

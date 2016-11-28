@@ -70,6 +70,9 @@
         <activity
             android:name=".ui.UserDetailActivity"
             android:label="@string/title_activity_user_detail" />
+        <activity
+            android:name=".ui.LoginActivity"
+            android:label="@string/title_activity_login" />
     </application>
 
 </manifest>
