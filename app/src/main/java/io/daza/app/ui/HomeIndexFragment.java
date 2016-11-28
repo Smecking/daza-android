@@ -21,10 +21,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import io.daza.app.R;
-import io.daza.app.ui.base.BaseFragment;
+import java.util.ArrayList;
 
-public class HomeIndexFragment extends BaseFragment {
+import io.daza.app.R;
+import io.daza.app.model.Article;
+import io.daza.app.model.Notification;
+import io.daza.app.model.Result;
+import io.daza.app.ui.base.BaseFragment;
+import io.daza.app.ui.base.BaseListFragment;
+import io.daza.app.ui.vh.ArticleViewHolder;
+import io.daza.app.ui.vh.TopicViewHolder;
+
+public class HomeIndexFragment extends BaseListFragment<ArticleViewHolder, Article, Result<ArrayList<Article>>> {
 
     public HomeIndexFragment() {
         // Required empty public constructor
@@ -49,4 +57,40 @@ public class HomeIndexFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_home_index, container, false);
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        this.initLoader();
+    }
+
+    @Override
+    public ArticleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_articles_list_item, parent, false);
+        return new ArticleViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(ArticleViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+    }
+
+    @Override
+    public Result<ArrayList<Article>> onLoadInBackground() throws Exception {
+        Result<ArrayList<Article>> result = new Result<>();
+
+        ArrayList<Article> data = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            data.add(new Article());
+        }
+        result.setData(data);
+
+        return result;
+    }
+
+    @Override
+    public void onLoadComplete(Result<ArrayList<Article>> data) {
+        getItemsSource().addAll(data.getData());
+        getAdapter().notifyDataSetChanged();
+        super.onRefreshComplete();
+    }
 }

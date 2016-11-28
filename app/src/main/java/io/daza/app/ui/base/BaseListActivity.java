@@ -46,21 +46,11 @@ public abstract class BaseListActivity<VH extends RecyclerView.ViewHolder, Item,
 
     @Override
     public void onRefresh() {
-
+        this.forceLoad();
     }
 
     @Override
     public void onLoadStart() {
-
-    }
-
-    @Override
-    public Result onLoadInBackground() throws Exception {
-        return null;
-    }
-
-    @Override
-    public void onLoadComplete(Result data) {
 
     }
 

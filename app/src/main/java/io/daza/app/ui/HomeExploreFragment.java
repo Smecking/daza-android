@@ -17,15 +17,19 @@
 package io.daza.app.ui;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import io.daza.app.R;
-import io.daza.app.ui.base.BaseFragment;
+import java.util.ArrayList;
 
-public class HomeExploreFragment extends BaseFragment {
+import io.daza.app.R;
+import io.daza.app.model.Result;
+import io.daza.app.model.Topic;
+import io.daza.app.ui.base.BaseListFragment;
+import io.daza.app.ui.vh.TopicViewHolder;
+
+public class HomeExploreFragment extends BaseListFragment<TopicViewHolder, Topic, Result<ArrayList<Topic>>> {
 
     public HomeExploreFragment() {
         // Required empty public constructor
@@ -50,4 +54,40 @@ public class HomeExploreFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_home_explore, container, false);
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        this.initLoader();
+    }
+
+    @Override
+    public TopicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_home_explore_list_item, parent, false);
+        return new TopicViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(TopicViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+    }
+
+    @Override
+    public Result<ArrayList<Topic>> onLoadInBackground() throws Exception {
+        Result<ArrayList<Topic>> result = new Result<>();
+
+        ArrayList<Topic> data = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            data.add(new Topic());
+        }
+        result.setData(data);
+
+        return result;
+    }
+
+    @Override
+    public void onLoadComplete(Result<ArrayList<Topic>> data) {
+        getItemsSource().addAll(data.getData());
+        getAdapter().notifyDataSetChanged();
+        super.onRefreshComplete();
+    }
 }

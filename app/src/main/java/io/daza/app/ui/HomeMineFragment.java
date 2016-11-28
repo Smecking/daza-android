@@ -72,7 +72,7 @@ public class HomeMineFragment extends BaseFragment {
         mBtnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeMineFragment.this.getActivity(), Settings2Activity.class);
+                Intent intent = new Intent(HomeMineFragment.this.getActivity(), SettingsActivity.class);
                 startActivity(intent);
             }
         });

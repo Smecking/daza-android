@@ -21,10 +21,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import io.daza.app.R;
-import io.daza.app.ui.base.BaseFragment;
+import java.util.ArrayList;
 
-public class HomeInboxFragment extends BaseFragment {
+import io.daza.app.R;
+import io.daza.app.model.Notification;
+import io.daza.app.model.Result;
+import io.daza.app.ui.base.BaseFragment;
+import io.daza.app.ui.base.BaseListFragment;
+import io.daza.app.ui.vh.NotificationViewHolder;
+
+public class HomeInboxFragment extends BaseListFragment<NotificationViewHolder, Notification, Result<ArrayList<Notification>>>{
 
     public HomeInboxFragment() {
         // Required empty public constructor
@@ -49,4 +55,35 @@ public class HomeInboxFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_home_inbox, container, false);
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        super.initLoader();
+    }
+
+    @Override
+    public NotificationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_home_inbox_list_item, parent, false);
+        return new NotificationViewHolder(itemView);
+    }
+
+    @Override
+    public Result<ArrayList<Notification>> onLoadInBackground() throws Exception {
+        Result<ArrayList<Notification>> result = new Result<>();
+
+        ArrayList<Notification> data = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            data.add(new Notification());
+        }
+        result.setData(data);
+
+        return result;
+    }
+
+    @Override
+    public void onLoadComplete(Result<ArrayList<Notification>> data) {
+        getItemsSource().addAll(data.getData());
+        getAdapter().notifyDataSetChanged();
+        super.onRefreshComplete();
+    }
 }

@@ -22,12 +22,12 @@ import android.view.ViewGroup;
 import org.blankapp.app.ListFragment;
 
 
-public class BaseListFragment<VH extends RecyclerView.ViewHolder, Item, Result> extends
+public abstract class BaseListFragment<VH extends RecyclerView.ViewHolder, Item, Result> extends
         ListFragment<VH, Item, Result> {
 
     @Override
     public void onRefresh() {
-
+        this.forceLoad();
     }
 
     @Override
@@ -37,16 +37,6 @@ public class BaseListFragment<VH extends RecyclerView.ViewHolder, Item, Result> 
 
     @Override
     public void onLoadStart() {
-
-    }
-
-    @Override
-    public Result onLoadInBackground() throws Exception {
-        return null;
-    }
-
-    @Override
-    public void onLoadComplete(Result data) {
 
     }
 
