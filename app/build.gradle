@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'icon-version'
+apply plugin: 'com.growingio.android'
 
 android {
     compileSdkVersion Integer.parseInt(COMPILE_SDK_VERSION)
@@ -16,11 +17,32 @@ android {
             abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
         }
         multiDexEnabled true
+        resValue("string", "growingio_project_id", GROWING_ID)
+        resValue("string", "growingio_url_scheme", GROWING_URL_SCHEME)
+        resValue("string", "yunba_appkey", YUNBA_APPKEY)
+        resValue("string", "bughd_key", BUGHD_KEY)
     }
     buildTypes {
         release {
+            buildConfigField 'String', 'DOMAIN_NAME', '"daza.io"'
+            buildConfigField 'String', 'WEB_BASE_URL', '"https://daza.io"'
+            buildConfigField 'String', 'API_BASE_URL', '"https://api.daza.io"'
+            buildConfigField 'String', 'EMAIL_HI', '"hi@daza.i"'
+            buildConfigField 'String', 'EMAIL_REPORT', '"report@daza.i"'
+            buildConfigField 'String', 'EMAIL_SUPPORT', '"support@daza.i"'
+            buildConfigField 'String', 'QINIU_DOMAIN', QINIU_DOMAIN
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            buildConfigField 'String', 'DOMAIN_NAME', '"daza.io"'
+            buildConfigField 'String', 'WEB_BASE_URL', '"https://daza.io"'
+            buildConfigField 'String', 'API_BASE_URL', '"https://api.daza.io"'
+            buildConfigField 'String', 'EMAIL_HI', '"hi@daza.i"'
+            buildConfigField 'String', 'EMAIL_REPORT', '"report@daza.i"'
+            buildConfigField 'String', 'EMAIL_SUPPORT', '"support@daza.i"'
+            buildConfigField 'String', 'QINIU_DOMAIN', QINIU_DOMAIN
         }
     }
     packagingOptions {
@@ -55,12 +77,14 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     compile 'org.blankapp:blankapp:0.0.11-alpha@aar'
     compile 'org.blankapp:blankapp-validation:0.0.1-alpha@aar'
-    compile 'com.squareup.retrofit2:retrofit:2.0.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.0'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.facebook.stetho:stetho:1.3.1'
-    compile 'com.facebook.stetho:stetho-okhttp3:1.3.1'
+    compile 'com.facebook.stetho:stetho:1.4.1'
+    compile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'im.fir:fir-sdk:latest.integration@aar'
+    compile 'com.growingio.android:vds-android-agent:0.9.100@aar'
     testCompile 'junit:junit:4.12'
 }
 

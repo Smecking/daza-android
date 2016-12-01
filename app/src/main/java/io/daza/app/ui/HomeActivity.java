@@ -30,6 +30,7 @@ import org.blankapp.annotation.ViewById;
 import io.daza.app.R;
 import io.daza.app.ui.adapters.HomeBottomNavigationAdapter;
 import io.daza.app.ui.base.BaseActivity;
+import io.yunba.android.manager.YunBaManager;
 
 import static io.daza.app.ui.adapters.HomeBottomNavigationAdapter.HOME_TAB_INDEX;
 import static io.daza.app.ui.adapters.HomeBottomNavigationAdapter.HOME_TAB_EXPLORE;
@@ -71,6 +72,7 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
         mViewPager.setAdapter(this.mHomeBottomNavigationAdapter);
         mViewPager.setOffscreenPageLimit(4);
         mViewPager.addOnPageChangeListener(this);
+
     }
 
     @Override

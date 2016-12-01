@@ -19,7 +19,15 @@ package io.daza.app;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.facebook.stetho.Stetho;
+import com.growingio.android.sdk.collection.Configuration;
+import com.growingio.android.sdk.collection.GrowingIO;
+
 import org.blankapp.app.Application;
+
+import im.fir.sdk.FIR;
+import io.yunba.android.core.YunBaService;
+import io.yunba.android.manager.YunBaManager;
 
 public class AppContext extends Application {
 
@@ -32,6 +40,18 @@ public class AppContext extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Stetho.initializeWithDefaults(this);
+        // 初始化 YunBa
+        YunBaManager.start(getApplicationContext());
+
+        // 初始化 GrowingIO
+        GrowingIO.startWithConfiguration(this, new Configuration()
+                .useID()
+                .trackAllFragments()
+                .setChannel("GooglePlay"));
+
+        // 初始化 BugHD
+        FIR.init(this);
     }
 
 }

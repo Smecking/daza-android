@@ -23,9 +23,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import io.daza.app.R;
+import io.daza.app.api.ApiClient;
+import io.daza.app.model.Result;
+import io.daza.app.model.User;
 import io.daza.app.ui.base.BaseFragment;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeMineFragment extends BaseFragment {
 
@@ -63,8 +70,20 @@ public class HomeMineFragment extends BaseFragment {
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeMineFragment.this.getActivity(), LoginActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(HomeMineFragment.this.getActivity(), LoginActivity.class);
+//                startActivity(intent);
+                ApiClient apiClient = new ApiClient();
+                apiClient.api.login("1","2").enqueue(new Callback<Result<User>>() {
+                    @Override
+                    public void onResponse(Call<Result<User>> call, Response<Result<User>> response) {
+                        Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Result<User>> call, Throwable t) {
+                        Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
