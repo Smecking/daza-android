@@ -20,8 +20,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import io.daza.app.R;
+import io.daza.app.ui.base.BaseWebViewActivity;
 
-public class InAppBrowserActivity extends AppCompatActivity {
+public class InAppBrowserActivity extends BaseWebViewActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

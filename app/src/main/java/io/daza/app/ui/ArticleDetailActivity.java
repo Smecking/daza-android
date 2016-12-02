@@ -16,16 +16,24 @@
 
 package io.daza.app.ui;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import io.daza.app.BuildConfig;
 import io.daza.app.R;
+import io.daza.app.model.Article;
+import io.daza.app.model.Model;
 
-public class ArticleDetailActivity extends AppCompatActivity {
+public class ArticleDetailActivity extends InAppBrowserActivity {
+
+    private Article mArticle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_acticle_detail);
+
+        mArticle = Model.parseObject(getIntent().getStringExtra("extra_article"), Article.class);
+
+        loadUrl(BuildConfig.WEB_BASE_URL + "/in-app/articles/" + mArticle.getId());
     }
 }

@@ -23,6 +23,7 @@ public class Article extends Model {
 
     private String short_id;        // ShortId
     private int user_id;            // 用户Id
+    private Topic topic;
     private int topic_id;           // 主题Id
     private String guid;            // 文章唯一标识符
     private String type;            // 类型 = ['ad', 'share', 'original']stringEnum:"ad", "share", "original"
@@ -62,6 +63,14 @@ public class Article extends Model {
 
     public void setUser_id(int user_id) {
         this.user_id = user_id;
+    }
+
+    public Topic getTopic() {
+        return topic;
+    }
+
+    public void setTopic(Topic topic) {
+        this.topic = topic;
     }
 
     public int getTopic_id() {

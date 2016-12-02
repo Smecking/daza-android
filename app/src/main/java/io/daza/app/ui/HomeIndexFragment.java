@@ -17,22 +17,37 @@
 package io.daza.app.ui;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.blankapp.annotation.ViewById;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import io.daza.app.R;
 import io.daza.app.model.Article;
+import io.daza.app.model.Category;
 import io.daza.app.model.Notification;
 import io.daza.app.model.Result;
+import io.daza.app.ui.adapters.HomeIndexAdapter;
 import io.daza.app.ui.base.BaseFragment;
 import io.daza.app.ui.base.BaseListFragment;
 import io.daza.app.ui.vh.ArticleViewHolder;
 import io.daza.app.ui.vh.TopicViewHolder;
 
-public class HomeIndexFragment extends BaseListFragment<ArticleViewHolder, Article, Result<ArrayList<Article>>> {
+public class HomeIndexFragment extends BaseFragment {
+
+    @ViewById(R.id.tablayout)
+    private TabLayout mTabLayout;
+    @ViewById(R.id.viewpager)
+    private ViewPager mViewPager;
+
+    private List<ArticlesFragment> mFragments;
+    private HomeIndexAdapter mHomeIndexAdapter;
 
     public HomeIndexFragment() {
         // Required empty public constructor
@@ -60,37 +75,17 @@ public class HomeIndexFragment extends BaseListFragment<ArticleViewHolder, Artic
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.initLoader();
+
+        mFragments = new ArrayList<>();
+        mFragments.add(ArticlesFragment.newInstance(Category.latest()));
+        mFragments.add(ArticlesFragment.newInstance(Category.popular()));
+
+        mHomeIndexAdapter = new HomeIndexAdapter(getChildFragmentManager(), mFragments);
+
+        mViewPager.setAdapter(mHomeIndexAdapter);
+        mViewPager.setOffscreenPageLimit(4);
+
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
-    @Override
-    public ArticleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_articles_list_item, parent, false);
-        return new ArticleViewHolder(itemView);
-    }
-
-    @Override
-    public void onBindViewHolder(ArticleViewHolder holder, int position) {
-        super.onBindViewHolder(holder, position);
-    }
-
-    @Override
-    public Result<ArrayList<Article>> onLoadInBackground() throws Exception {
-        Result<ArrayList<Article>> result = new Result<>();
-
-        ArrayList<Article> data = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            data.add(new Article());
-        }
-        result.setData(data);
-
-        return result;
-    }
-
-    @Override
-    public void onLoadComplete(Result<ArrayList<Article>> data) {
-        getItemsSource().addAll(data.getData());
-        getAdapter().notifyDataSetChanged();
-        super.onRefreshComplete();
-    }
 }

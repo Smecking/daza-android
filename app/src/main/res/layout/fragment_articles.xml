@@ -4,4 +4,15 @@
     android:layout_height="match_parent"
     tools:context="io.daza.app.ui.ArticlesFragment">
 
+    <org.blankapp.widget.PullToRefreshLayout
+        android:id="@id/pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/fragment_home_explore_list_item" />
+    </org.blankapp.widget.PullToRefreshLayout>
 </FrameLayout>

@@ -16,7 +16,31 @@
 
 package io.daza.app.model;
 
+import android.text.TextUtils;
+
+import com.google.gson.Gson;
+
 public class Model {
+
+    /**
+     * 将Model转换为Json字符串 *
+     *
+     * @return
+     */
+    public String toJSONString() {
+        Gson gson = new Gson();
+        // 转换为Json字符串时将忽略用transient修饰的字段
+        return gson.toJson(this);
+    }
+
+    public static <T extends Model> T parseObject(final String json, Class<T> clazz) {
+        // Json字符串为空，则返回null
+        if (TextUtils.isEmpty(json)) {
+            return null;
+        }
+        Gson gson = new Gson();
+        return gson.fromJson(json, clazz);
+    }
 
     private int id;
     private String deleted_at;

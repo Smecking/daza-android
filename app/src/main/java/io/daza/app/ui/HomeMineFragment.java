@@ -76,7 +76,7 @@ public class HomeMineFragment extends BaseFragment {
                 apiClient.api.login("1","2").enqueue(new Callback<Result<User>>() {
                     @Override
                     public void onResponse(Call<Result<User>> call, Response<Result<User>> response) {
-                        Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

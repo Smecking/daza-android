@@ -56,6 +56,11 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
         this.homeIndexFragment = HomeIndexFragment.newInstance();
         this.homeExploreFragment = HomeExploreFragment.newInstance();
         this.homeInboxFragment = HomeInboxFragment.newInstance();

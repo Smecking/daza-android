@@ -16,7 +16,9 @@
 
 package io.daza.app.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +26,12 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import io.daza.app.R;
+import io.daza.app.api.ApiClient;
 import io.daza.app.model.Result;
 import io.daza.app.model.Topic;
 import io.daza.app.ui.base.BaseListFragment;
 import io.daza.app.ui.vh.TopicViewHolder;
+import retrofit2.Response;
 
 public class HomeExploreFragment extends BaseListFragment<TopicViewHolder, Topic, Result<ArrayList<Topic>>> {
 
@@ -73,15 +77,18 @@ public class HomeExploreFragment extends BaseListFragment<TopicViewHolder, Topic
 
     @Override
     public Result<ArrayList<Topic>> onLoadInBackground() throws Exception {
-        Result<ArrayList<Topic>> result = new Result<>();
-
-        ArrayList<Topic> data = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            data.add(new Topic());
-        }
-        result.setData(data);
-
-        return result;
+//        Result<ArrayList<Topic>> result = new Result<>();
+//
+//        ArrayList<Topic> data = new ArrayList<>();
+//        for (int i = 0; i < 100; i++) {
+//            data.add(new Topic());
+//        }
+//        result.setData(data);
+//
+//        return result;
+        ApiClient apiClient = new ApiClient();
+        Response<Result<ArrayList<Topic>>> response = apiClient.api.getTopics(1).execute();
+        return response.body();
     }
 
     @Override
@@ -89,5 +96,11 @@ public class HomeExploreFragment extends BaseListFragment<TopicViewHolder, Topic
         getItemsSource().addAll(data.getData());
         getAdapter().notifyDataSetChanged();
         super.onRefreshComplete();
+    }
+
+    @Override
+    protected void onListItemClick(RecyclerView rv, View v, int position, long id) {
+        Intent intent = new Intent(getActivity(), TopicDetailActivity.class);
+        startActivity(intent);
     }
 }

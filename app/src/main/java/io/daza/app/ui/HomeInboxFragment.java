@@ -16,7 +16,9 @@
 
 package io.daza.app.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,5 +87,33 @@ public class HomeInboxFragment extends BaseListFragment<NotificationViewHolder, 
         getItemsSource().addAll(data.getData());
         getAdapter().notifyDataSetChanged();
         super.onRefreshComplete();
+    }
+
+    @Override
+    protected void onListItemClick(RecyclerView rv, View v, int position, long id) {
+        Notification data = getItemsSource().get(position);
+
+        Intent intent = null;
+
+        switch (data.getReason()) {
+            case "followed":
+                intent = new Intent(getActivity(), UserDetailActivity.class);
+                break;
+            case "subscribed":
+                intent = new Intent(getActivity(), TopicDetailActivity.class);
+                break;
+            case "upvoted":
+                intent = new Intent(getActivity(), ArticleDetailActivity.class);
+                break;
+            case "comment":
+                intent = new Intent(getActivity(), ArticleDetailActivity.class);
+                break;
+            case "mention":
+                intent = new Intent(getActivity(), ArticleDetailActivity.class);
+                break;
+            default:
+                return;
+        }
+        startActivity(intent);
     }
 }

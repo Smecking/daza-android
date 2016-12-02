@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2015 JianyingLi <lijy91@foxmail.com>
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,6 +17,26 @@
 package io.daza.app.model;
 
 public class Category extends Model {
+
+    public static final int ID_LATEST  = -1; // 最新
+    public static final int ID_POPULAR = -2; // 推荐
+
+    public static Category latest() {
+        return new Category(ID_LATEST, "最新", "latest");
+    }
+
+    public static Category popular() {
+        return new Category(ID_POPULAR, "推荐", "popular");
+    }
+
+    public Category() {
+    }
+
+    public Category(int id, String name, String slug) {
+        this.setId(id);
+        this.setName(name);
+        this.setSlug(slug);
+    }
 
     private String slug;        // Slug
     private String name;        // 名称

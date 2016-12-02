@@ -16,65 +16,45 @@
 
 package io.daza.app.ui;
 
-import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import io.daza.app.R;
+import io.daza.app.api.ApiClient;
+import io.daza.app.model.Article;
+import io.daza.app.model.Category;
+import io.daza.app.model.Result;
+import io.daza.app.ui.base.BaseListFragment;
+import io.daza.app.ui.vh.ArticleViewHolder;
+import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ArticlesFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ArticlesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ArticlesFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class ArticlesFragment extends BaseListFragment<ArticleViewHolder, Article, Result<ArrayList<Article>>> {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
+    private Category mCategory;
 
     public ArticlesFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ArticlesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ArticlesFragment newInstance(String param1, String param2) {
+    public static ArticlesFragment newInstance(Category category) {
         ArticlesFragment fragment = new ArticlesFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
+
+        fragment.mCategory = category;
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -84,42 +64,60 @@ public class ArticlesFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_articles, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        this.initLoader();
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+    public ArticleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_articles_list_item, parent, false);
+        return new ArticleViewHolder(itemView);
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void onBindViewHolder(ArticleViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+        Article data = getItemsSource().get(position);
+        holder.bind(data);
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public Result<ArrayList<Article>> onLoadInBackground() throws Exception {
+//        Result<ArrayList<Article>> result = new Result<>();
+//
+//        ArrayList<Article> data = new ArrayList<>();
+//        for (int i = 0; i < 100; i++) {
+//            data.add(new Article());
+//        }
+//        result.setData(data);
+//
+//        return result;
+        ApiClient apiClient = new ApiClient();
+        Response<Result<ArrayList<Article>>> response = apiClient.api.getArticles(1, mCategory.getId(), mCategory.getSlug()).execute();
+        return response.body();
+    }
+
+    @Override
+    public void onLoadComplete(Result<ArrayList<Article>> data) {
+        getItemsSource().addAll(data.getData());
+        getAdapter().notifyDataSetChanged();
+        super.onRefreshComplete();
+    }
+
+    @Override
+    protected void onListItemClick(RecyclerView rv, View v, int position, long id) {
+        Article data = getItemsSource().get(position);
+        Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
+        intent.putExtra("extra_article", data.toJSONString());
+        startActivity(intent);
+    }
+
+    public String getCategoryName() {
+        if (mCategory != null) {
+            return mCategory.getName();
+        }
+        return null;
     }
 }
