@@ -27,8 +27,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.blankapp.annotation.ViewById;
+import org.blankapp.util.ViewUtils;
 
 import io.daza.app.R;
 import io.daza.app.ui.adapters.HomeBottomNavigationAdapter;
@@ -47,6 +50,12 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
     private HomeInboxFragment homeInboxFragment;
     private HomeMineFragment homeMineFragment;
 
+    @ViewById(R.id.toolbar)
+    private Toolbar mToolbar;
+    @ViewById(R.id.iv_logo)
+    private ImageView mIvLogo;
+    @ViewById(R.id.tv_title)
+    private TextView mTvTitle;
     @ViewById(R.id.btn_home_search)
     private Button mBtnHomeSearch;
     @ViewById(R.id.viewpager)
@@ -61,14 +70,7 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            getSupportActionBar().setDisplayShowHomeEnabled(false);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
+        setSupportActionBar(mToolbar);
 
         this.homeIndexFragment = HomeIndexFragment.newInstance();
         this.homeExploreFragment = HomeExploreFragment.newInstance();
@@ -108,6 +110,26 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
             BottomNavigationMenuView bottomNavigationMenuView = (BottomNavigationMenuView) view;
             bottomNavigationMenuView.getChildAt(position).performClick();
         }
+
+        boolean showLogoEnabled = position == HOME_TAB_INDEX;
+        switch (position) {
+            case HOME_TAB_INDEX:
+                mTvTitle.setText(R.string.action_tab_index);
+                break;
+            case HOME_TAB_EXPLORE:
+                mTvTitle.setText(R.string.action_tab_explore);
+                break;
+            case HOME_TAB_INBOX:
+                mTvTitle.setText(R.string.action_tab_inbox);
+                break;
+            case HOME_TAB_MINE:
+                mTvTitle.setText(R.string.action_tab_mine);
+                break;
+        }
+
+        ViewUtils.setGone(mIvLogo, !showLogoEnabled);
+        ViewUtils.setGone(mTvTitle, showLogoEnabled);
+        ViewUtils.setGone(mBtnHomeSearch, !showLogoEnabled);
     }
 
     @Override
