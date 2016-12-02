@@ -6,7 +6,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import org.blankapp.util.ViewUtils;
+
+import java.util.Locale;
 
 import io.daza.app.R;
 import io.daza.app.model.Article;
@@ -16,6 +20,7 @@ public class ArticleViewHolder extends RecyclerView.ViewHolder {
     private ImageView mIvImage;
     private TextView mTvTitle;
     private TextView mTvTopicName;
+    private TextView mtvPublishedAt;
     private TextView mTvCommentCount;
     private TextView mTvViewCount;
 
@@ -24,16 +29,25 @@ public class ArticleViewHolder extends RecyclerView.ViewHolder {
         mIvImage = (ImageView) itemView.findViewById(R.id.iv_image);
         mTvTitle = (TextView) itemView.findViewById(R.id.tv_title);
         mTvTopicName = (TextView) itemView.findViewById(R.id.tv_topic_name);
+        mtvPublishedAt = (TextView) itemView.findViewById(R.id.tv_published_at);
         mTvCommentCount = (TextView) itemView.findViewById(R.id.tv_comment_count);
         mTvViewCount = (TextView) itemView.findViewById(R.id.tv_view_count);
     }
 
     public void bind(Article data) {
+        Glide
+                .with(itemView.getContext())
+                .load(data.getImage_url())
+                .centerCrop()
+                .placeholder(R.mipmap.placeholder_image)
+                .crossFade()
+                .into(mIvImage);
         ViewUtils.setGone(mIvImage, TextUtils.isEmpty(data.getImage_url()));
         mTvTitle.setText(data.getTitle());
         mTvTopicName.setText(data.getTopic().getName());
-        mTvCommentCount.setText(data.getComment_count() + "评论");
-        mTvViewCount.setText(data.getView_count() + "阅读");
+        mtvPublishedAt.setText(data.getPublished_at());
+        mTvCommentCount.setText(String.format(Locale.US, "%d评论", data.getComment_count()));
+        mTvViewCount.setText(String.format(Locale.US, "%d阅读", data.getView_count()));
     }
 
 }

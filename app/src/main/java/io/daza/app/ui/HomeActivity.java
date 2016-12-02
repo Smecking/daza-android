@@ -16,14 +16,17 @@
 
 package io.daza.app.ui;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import org.blankapp.annotation.ViewById;
 
@@ -44,6 +47,8 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
     private HomeInboxFragment homeInboxFragment;
     private HomeMineFragment homeMineFragment;
 
+    @ViewById(R.id.btn_home_search)
+    private Button mBtnHomeSearch;
     @ViewById(R.id.viewpager)
     private ViewPager mViewPager;
     @ViewById(R.id.bottom_navigation)
@@ -56,9 +61,13 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(false);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
         this.homeIndexFragment = HomeIndexFragment.newInstance();
@@ -78,6 +87,13 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
         mViewPager.setOffscreenPageLimit(4);
         mViewPager.addOnPageChangeListener(this);
 
+        mBtnHomeSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

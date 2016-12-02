@@ -23,9 +23,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import org.blankapp.app.BaseActivity;
+
 import io.daza.app.R;
 
-public class ModifyProfileActivity extends AppCompatActivity {
+public class ModifyProfileActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -73,6 +73,8 @@ public class HomeExploreFragment extends BaseListFragment<TopicViewHolder, Topic
     @Override
     public void onBindViewHolder(TopicViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
+        Topic data = getItemsSource().get(position);
+        holder.bind(data);
     }
 
     @Override

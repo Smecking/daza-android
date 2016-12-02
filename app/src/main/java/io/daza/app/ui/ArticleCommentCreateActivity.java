@@ -16,12 +16,12 @@
 
 package io.daza.app.ui;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import io.daza.app.R;
+import io.daza.app.ui.base.BaseActivity;
 
-public class ArticleCommentCreateActivity extends AppCompatActivity {
+public class ArticleCommentCreateActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

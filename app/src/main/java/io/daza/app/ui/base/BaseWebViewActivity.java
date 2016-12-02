@@ -21,7 +21,6 @@ import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -35,7 +34,7 @@ import java.util.Map;
 
 import io.daza.app.R;
 
-public class BaseWebViewActivity extends AppCompatActivity {
+public class BaseWebViewActivity extends BaseActivity {
 
     private WebView mWebView;
     private ProgressBar mProgressBar;
