@@ -42,7 +42,7 @@ public class ArticleCommentsActivity extends BaseListActivity<ArticleCommentView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_acticle_comments);
+        setContentView(R.layout.activity_article_comments);
 
         mArticleId = getIntent().getIntExtra("extra_article_id", 0);
         mArticle = Model.parseObject(getIntent().getStringExtra("extra_article"), Article.class);
@@ -52,7 +52,7 @@ public class ArticleCommentsActivity extends BaseListActivity<ArticleCommentView
 
     @Override
     public ArticleCommentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_acticle_comments_list_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_article_comments_list_item, parent, false);
         return new ArticleCommentViewHolder(itemView);
     }
 

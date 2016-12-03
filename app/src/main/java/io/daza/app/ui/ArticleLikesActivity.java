@@ -26,6 +26,6 @@ public class ArticleLikesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_acticle_likes);
+        setContentView(R.layout.activity_article_likes);
     }
 }

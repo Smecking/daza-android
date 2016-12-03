@@ -14,7 +14,7 @@
             android:id="@id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/fragment_home_explore_list_item" />
+            tools:listitem="@layout/activity_topic_detail_list_item" />
     </org.blankapp.widget.PullToRefreshLayout>
 
 </RelativeLayout>

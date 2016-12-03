@@ -47,7 +47,7 @@ public class ArticleDetailActivity extends InAppBrowserActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_acticle_detail);
+        setContentView(R.layout.activity_article_detail);
 
         mArticleId = getIntent().getIntExtra("extra_article_id", 0);
         mArticle = Model.parseObject(getIntent().getStringExtra("extra_article"), Article.class);
