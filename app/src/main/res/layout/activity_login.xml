@@ -27,13 +27,15 @@
         android:id="@+id/edt_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="邮箱" />
+        android:hint="邮箱"
+        android:inputType="textEmailAddress" />
 
     <android.support.v7.widget.AppCompatEditText
         android:id="@+id/edt_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="密码" />
+        android:hint="密码"
+        android:inputType="textPassword" />
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_submit"

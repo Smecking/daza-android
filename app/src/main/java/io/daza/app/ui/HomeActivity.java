@@ -32,8 +32,12 @@ import android.widget.TextView;
 
 import org.blankapp.annotation.ViewById;
 import org.blankapp.util.ViewUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import io.daza.app.R;
+import io.daza.app.event.LoginStatusChangedEvent;
 import io.daza.app.ui.adapters.HomeBottomNavigationAdapter;
 import io.daza.app.ui.base.BaseActivity;
 import io.yunba.android.manager.YunBaManager;
@@ -99,6 +103,18 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
     }
@@ -154,5 +170,10 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
                 break;
         }
         return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LoginStatusChangedEvent event) {
+        // Do something
     }
 }

@@ -25,9 +25,21 @@ import android.widget.EditText;
 import org.blankapp.annotation.ViewById;
 import org.blankapp.validation.Rule;
 import org.blankapp.validation.Validator;
+import org.blankapp.validation.handlers.DefaultErrorHandler;
+import org.greenrobot.eventbus.EventBus;
 
 import io.daza.app.R;
+import io.daza.app.api.ApiClient;
+import io.daza.app.event.LoginStatusChangedEvent;
+import io.daza.app.model.Result;
+import io.daza.app.model.User;
 import io.daza.app.ui.base.BaseActivity;
+import io.daza.app.util.Auth;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static io.daza.app.api.ApiClient.API;
 
 public class LoginActivity extends BaseActivity {
 
@@ -46,9 +58,12 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mEdtEmail.setText("lijy91@foxmail.com");
+        mEdtPassword.setText("7t2U9P8q99jg");
 
         mValidator.add(Rule.with(mEdtEmail).required().email());
         mValidator.add(Rule.with(mEdtPassword).required().minLength(6).maxLength(32));
+        mValidator.setErrorHandler(new DefaultErrorHandler());
 
         mBtnSubmit.setOnClickListener(mSubmitClickListener);
     }
@@ -59,6 +74,32 @@ public class LoginActivity extends BaseActivity {
             if (!mValidator.validate()) {
                 return;
             }
+
+            String email = mEdtEmail.getText().toString();
+            String password = mEdtPassword.getText().toString();
+
+            Call<Result<User>> call = API.login(email, password);
+
+            call.enqueue(new Callback<Result<User>>() {
+                @Override
+                public void onResponse(Call<Result<User>> call, Response<Result<User>> response) {
+                    if (response.isSuccessful()) {
+                        Result<User> result = response.body();
+                        if (result.isSuccessful()) {
+                            User user = result.getData();
+                            Auth.jwtToken(user.getJwt_token());
+                            Auth.user(user);
+                            Auth.userConfigs(user.getConfigs());
+                            EventBus.getDefault().post(new LoginStatusChangedEvent());
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Result<User>> call, Throwable t) {
+
+                }
+            });
         }
     };
 }

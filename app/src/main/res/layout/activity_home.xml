@@ -39,7 +39,6 @@
                     android:id="@+id/iv_logo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="12dp"
                     android:src="@mipmap/ic_logo_light" />
 
                 <Button
@@ -49,7 +48,8 @@
                     android:layout_margin="12dp"
                     android:background="@drawable/btn_home_search"
                     android:text="搜索你感兴趣的内容"
-                    android:textColor="@color/colorPrimary" />
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp" />
             </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
