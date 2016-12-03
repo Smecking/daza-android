@@ -19,6 +19,7 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import io.daza.app.BuildConfig;
+import io.daza.app.util.Auth;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -32,29 +33,31 @@ public class ApiClient {
     private static final int READ_TIMEOUT_MILLIS    = 20000; // 20 seconds
     private static final int WRITE_TIMEOUT_MILLIS   = 20000; // 20 seconds
 
-    public Api api;
+    public static Api API;
 
     private static final Interceptor COOKIES_REQUEST_INTERCEPTOR = new Interceptor() {
 
         @Override
         public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-            request = request.newBuilder()
-                    .addHeader("Accept", "application/json")
-//                    .addHeader("Authorization", "Bearer ")
-                    .build();
-            return chain.proceed(request);
+            Request.Builder builder = chain.request().newBuilder();
+
+            builder.addHeader("Accept", "application/json");
+            if (Auth.check()) {
+                builder.addHeader("Authorization", "Bearer " + Auth.jwtToken().getAccess_token());
+            }
+
+            return chain.proceed(builder.build());
         }
     };
 
-    public ApiClient() {
+    static {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BuildConfig.API_BASE_URL)
                 .client(generateDefaultOkHttp())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        this.api = retrofit.create(Api.class);
+        API = retrofit.create(Api.class);
     }
 
     private static OkHttpClient generateDefaultOkHttp() {
