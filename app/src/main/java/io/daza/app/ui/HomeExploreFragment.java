@@ -80,13 +80,17 @@ public class HomeExploreFragment extends BaseListFragment<TopicViewHolder, Topic
 
     @Override
     public Result<List<Topic>> onLoadInBackground() throws Exception {
-        Response<Result<List<Topic>>> response = API.getTopics(1).execute();
+        Response<Result<List<Topic>>> response = API.getTopics(getNextPage()).execute();
         return response.body();
     }
 
     @Override
     public void onLoadComplete(Result<List<Topic>> data) {
         if (data.isSuccessful()) {
+            setPagination(data.getPagination());
+            if (data.getPagination().getCurrent_page() == 1) {
+                getItemsSource().clear();
+            }
             getItemsSource().addAll(data.getData());
         }
         getAdapter().notifyDataSetChanged();

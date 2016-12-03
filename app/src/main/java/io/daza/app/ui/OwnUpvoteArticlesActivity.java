@@ -73,13 +73,17 @@ public class OwnUpvoteArticlesActivity extends BaseListActivity<ArticleViewHolde
 
     @Override
     public Result<List<ArticleVote>> onLoadInBackground() throws Exception {
-        Response<Result<List<ArticleVote>>> response = API.getUserUpvoteArticles(mUserId, 1).execute();
+        Response<Result<List<ArticleVote>>> response = API.getUserUpvoteArticles(mUserId, getNextPage()).execute();
         return response.body();
     }
 
     @Override
     public void onLoadComplete(Result<List<ArticleVote>> data) {
         if (data.isSuccessful()) {
+            setPagination(data.getPagination());
+            if (data.getPagination().getCurrent_page() == 1) {
+                getItemsSource().clear();
+            }
             getItemsSource().addAll(data.getData());
         }
         getAdapter().notifyDataSetChanged();

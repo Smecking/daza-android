@@ -58,6 +58,8 @@ public class ArticleDetailActivity extends InAppBrowserActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ArticleDetailActivity.this, ArticleCommentCreateActivity.class);
+                intent.putExtra("extra_article_id", mArticleId);
+                intent.putExtra("extra_article", mArticle.toJSONString());
                 startActivity(intent);
             }
         });
@@ -66,6 +68,8 @@ public class ArticleDetailActivity extends InAppBrowserActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ArticleDetailActivity.this, ArticleCommentsActivity.class);
+                intent.putExtra("extra_article_id", mArticleId);
+                intent.putExtra("extra_article", mArticle.toJSONString());
                 startActivity(intent);
             }
         });

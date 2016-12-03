@@ -84,13 +84,17 @@ public class TopicDetailActivity extends BaseListActivity<ArticleViewHolder, Art
 
     @Override
     public Result<List<Article>> onLoadInBackground() throws Exception {
-        Response<Result<List<Article>>> response = API.getTopicArticles(mTopicId, 1).execute();
+        Response<Result<List<Article>>> response = API.getTopicArticles(mTopicId, getNextPage()).execute();
         return response.body();
     }
 
     @Override
     public void onLoadComplete(Result<List<Article>> data) {
         if (data.isSuccessful()) {
+            setPagination(data.getPagination());
+            if (data.getPagination().getCurrent_page() == 1) {
+                getItemsSource().clear();
+            }
             getItemsSource().addAll(data.getData());
         }
         getAdapter().notifyDataSetChanged();

@@ -72,13 +72,17 @@ public class OwnSubscribesActivity extends BaseListActivity<TopicViewHolder, Top
 
     @Override
     public Result<List<TopicSubscriber>> onLoadInBackground() throws Exception {
-        Response<Result<List<TopicSubscriber>>> response = API.getUserSubscribes(mUserId, 1).execute();
+        Response<Result<List<TopicSubscriber>>> response = API.getUserSubscribes(mUserId, getNextPage()).execute();
         return response.body();
     }
 
     @Override
     public void onLoadComplete(Result<List<TopicSubscriber>> data) {
         if (data.isSuccessful()) {
+            setPagination(data.getPagination());
+            if (data.getPagination().getCurrent_page() == 1) {
+                getItemsSource().clear();
+            }
             getItemsSource().addAll(data.getData());
         }
         getAdapter().notifyDataSetChanged();

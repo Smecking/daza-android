@@ -18,13 +18,20 @@ package io.daza.app.ui.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 
 import org.blankapp.app.ListActivity;
 
+import io.daza.app.model.Pagination;
+
 public abstract class BaseListActivity<VH extends RecyclerView.ViewHolder, Item, Result> extends
         ListActivity<VH, Item, Result> {
+
+    private Pagination mPagination;
+    private boolean mIsLoadMore = false;
+    protected EndlessRecyclerViewScrollListener mEndlessRecyclerViewScrollListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,6 +39,22 @@ public abstract class BaseListActivity<VH extends RecyclerView.ViewHolder, Item,
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(false);
+        }
+    }
+
+    @Override
+    public void onContentChanged() {
+        super.onContentChanged();
+        if (mEndlessRecyclerViewScrollListener == null) {
+            LinearLayoutManager linearLayoutManager = (LinearLayoutManager) getRecyclerView().getLayoutManager();
+            mEndlessRecyclerViewScrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+
+                @Override
+                public void onLoadMore(int page, int totalItemsCount) {
+                    BaseListActivity.this.onLoadMore(page, totalItemsCount);
+                }
+            };
+            getRecyclerView().addOnScrollListener(mEndlessRecyclerViewScrollListener);
         }
     }
 
@@ -46,16 +69,48 @@ public abstract class BaseListActivity<VH extends RecyclerView.ViewHolder, Item,
 
     @Override
     public void onRefresh() {
+        this.mIsLoadMore = false;
+        this.forceLoad();
+    }
+
+    protected void onLoadMore(int page, int totalItemsCount) {
+        this.mIsLoadMore = true;
         this.forceLoad();
     }
 
     @Override
     public void onLoadStart() {
-
+        if (isEmpty()) {
+            // Do something
+        }
+        mEndlessRecyclerViewScrollListener.setLoading(true);
     }
 
     @Override
     public void onLoadError(Exception e) {
         e.printStackTrace();
+    }
+
+    @Override
+    public void onRefreshComplete() {
+        super.onRefreshComplete();
+        if (isEmpty()) {
+            // Do something
+        } else {
+            // Do something
+        }
+        mEndlessRecyclerViewScrollListener.setLoading(false);
+        getAdapter().notifyDataSetChanged();
+    }
+
+    public void setPagination(Pagination pagination) {
+        this.mPagination = pagination;
+    }
+
+    public int getNextPage() {
+        if (this.mPagination != null && mIsLoadMore) {
+            return this.mPagination.getCurrent_page() + 1;
+        }
+        return 1;
     }
 }

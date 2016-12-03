@@ -98,16 +98,19 @@ public class HomeInboxFragment extends
 
     @Override
     public Response<Result<List<Notification>>> onLoadInBackground() throws Exception {
-        return API.getNotifications(1, null).execute();
+        return API.getNotifications(getNextPage(), null).execute();
     }
 
     @Override
     public void onLoadComplete(Response<Result<List<Notification>>> response) {
         Result<List<Notification>> result = response.body();
         if (response.isSuccessful() && result.isSuccessful()) {
+            setPagination(result.getPagination());
+            if (result.getPagination().getCurrent_page() == 1) {
+                getItemsSource().clear();
+            }
             getItemsSource().addAll(result.getData());
         }
-        getAdapter().notifyDataSetChanged();
         super.onRefreshComplete();
     }
 

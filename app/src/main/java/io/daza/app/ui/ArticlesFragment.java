@@ -87,13 +87,17 @@ public class ArticlesFragment extends BaseListFragment<ArticleViewHolder, Articl
 
     @Override
     public Result<List<Article>> onLoadInBackground() throws Exception {
-        Response<Result<List<Article>>> response = API.getArticles(1, mCategory.getId(), mCategory.getSlug()).execute();
+        Response<Result<List<Article>>> response = API.getArticles(getNextPage(), mCategory.getId(), mCategory.getSlug()).execute();
         return response.body();
     }
 
     @Override
     public void onLoadComplete(Result<List<Article>> data) {
         if (data.isSuccessful()) {
+            setPagination(data.getPagination());
+            if (data.getPagination().getCurrent_page() == 1) {
+                getItemsSource().clear();
+            }
             getItemsSource().addAll(data.getData());
         }
         getAdapter().notifyDataSetChanged();
@@ -104,6 +108,7 @@ public class ArticlesFragment extends BaseListFragment<ArticleViewHolder, Articl
     protected void onListItemClick(RecyclerView rv, View v, int position, long id) {
         Article data = getItemsSource().get(position);
         Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
+        intent.putExtra("extra_article_id", data.getId());
         intent.putExtra("extra_article", data.toJSONString());
         startActivity(intent);
     }

@@ -46,6 +46,8 @@ public class ArticleCommentsActivity extends BaseListActivity<ArticleCommentView
 
         mArticleId = getIntent().getIntExtra("extra_article_id", 0);
         mArticle = Model.parseObject(getIntent().getStringExtra("extra_article"), Article.class);
+
+        this.initLoader();
     }
 
     @Override
@@ -62,16 +64,19 @@ public class ArticleCommentsActivity extends BaseListActivity<ArticleCommentView
 
     @Override
     public Result<List<ArticleComment>> onLoadInBackground() throws Exception {
-        Response<Result<List<ArticleComment>>> response = API.getArticleComments(mArticleId, 1).execute();
+        Response<Result<List<ArticleComment>>> response = API.getArticleComments(mArticleId, getNextPage()).execute();
         return response.body();
     }
 
     @Override
     public void onLoadComplete(Result<List<ArticleComment>> data) {
         if (data.isSuccessful()) {
+            setPagination(data.getPagination());
+            if (data.getPagination().getCurrent_page() == 1) {
+                getItemsSource().clear();
+            }
             getItemsSource().addAll(data.getData());
         }
-        getAdapter().notifyDataSetChanged();
         super.onRefreshComplete();
     }
 }
