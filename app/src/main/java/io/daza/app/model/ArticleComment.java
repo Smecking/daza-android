@@ -22,7 +22,7 @@ public class ArticleComment extends Model {
     private int user_id;    // 用户Id
     private Article article;
     private int article_id; // 文章Id
-    private int content;    // 内容
+    private String content;    // 内容
 
     public User getUser() {
         return user;
@@ -56,12 +56,11 @@ public class ArticleComment extends Model {
         this.article_id = article_id;
     }
 
-    public int getContent() {
+    public String getContent() {
         return content;
     }
 
-    public void setContent(int content) {
+    public void setContent(String content) {
         this.content = content;
     }
-
 }
