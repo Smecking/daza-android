@@ -16,20 +16,43 @@
 
 package io.daza.app.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
+
+import java.util.List;
 
 import io.daza.app.R;
-import io.daza.app.ui.base.BaseActivity;
+import io.daza.app.model.Article;
+import io.daza.app.model.Model;
+import io.daza.app.model.Result;
+import io.daza.app.model.Topic;
+import io.daza.app.ui.base.BaseListActivity;
+import io.daza.app.ui.vh.ArticleViewHolder;
+import retrofit2.Response;
 
-public class TopicDetailActivity extends BaseActivity {
+import static io.daza.app.api.ApiClient.API;
+
+public class TopicDetailActivity extends BaseListActivity<ArticleViewHolder, Article, Result<List<Article>>> {
+
+    private int mTopicId;
+    private Topic mTopic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic_detail);
+
+        mTopicId = getIntent().getIntExtra("extra_topic_id", 0);
+        mTopic = Model.parseObject(getIntent().getStringExtra("extra_topic"), Topic.class);
+
+        this.initLoader();
     }
 
     @Override
@@ -44,5 +67,42 @@ public class TopicDetailActivity extends BaseActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public ArticleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_topic_detail_list_item, parent, false);
+        return new ArticleViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(ArticleViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+        Article data = getItemsSource().get(position);
+        holder.bind(data);
+    }
+
+    @Override
+    public Result<List<Article>> onLoadInBackground() throws Exception {
+        Response<Result<List<Article>>> response = API.getTopicArticles(mTopicId, 1).execute();
+        return response.body();
+    }
+
+    @Override
+    public void onLoadComplete(Result<List<Article>> data) {
+        if (data.isSuccessful()) {
+            getItemsSource().addAll(data.getData());
+        }
+        getAdapter().notifyDataSetChanged();
+        super.onRefreshComplete();
+    }
+
+    @Override
+    protected void onListItemClick(RecyclerView rv, View v, int position, long id) {
+        Article data = getItemsSource().get(position);
+        Intent intent = new Intent(this, ArticleDetailActivity.class);
+        intent.putExtra("extra_article_id", data.getId());
+        intent.putExtra("extra_article", data.toJSONString());
+        startActivity(intent);
     }
 }
