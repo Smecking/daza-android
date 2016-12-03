@@ -18,8 +18,18 @@ package io.daza.app.model;
 
 public class TopicSubscriber extends Model {
 
+    private User user;
     private int user_id;    // 用户Id
+    private Topic topic;
     private int topic_id;   // 主题Id
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public int getUser_id() {
         return user_id;
@@ -27,6 +37,14 @@ public class TopicSubscriber extends Model {
 
     public void setUser_id(int user_id) {
         this.user_id = user_id;
+    }
+
+    public Topic getTopic() {
+        return topic;
+    }
+
+    public void setTopic(Topic topic) {
+        this.topic = topic;
     }
 
     public int getTopic_id() {
