@@ -123,18 +123,28 @@ public class HomeInboxFragment extends
         switch (data.getReason()) {
             case "followed":
                 intent = new Intent(getActivity(), UserDetailActivity.class);
+                intent.putExtra("extra_user_id", data.getFrom_user_id());
+                intent.putExtra("extra_user", data.getFrom_user().toJSONString());
                 break;
             case "subscribed":
                 intent = new Intent(getActivity(), TopicDetailActivity.class);
+                intent.putExtra("extra_topic_id", data.getTopic_id());
+                intent.putExtra("extra_topic", data.getTopic().toJSONString());
                 break;
             case "upvoted":
                 intent = new Intent(getActivity(), ArticleDetailActivity.class);
+                intent.putExtra("extra_article_id", data.getArticle_id());
+                intent.putExtra("extra_article", data.getArticle().toJSONString());
                 break;
             case "comment":
                 intent = new Intent(getActivity(), ArticleDetailActivity.class);
+                intent.putExtra("extra_article_id", data.getArticle_id());
+                intent.putExtra("extra_article", data.getArticle().toJSONString());
                 break;
             case "mention":
                 intent = new Intent(getActivity(), ArticleDetailActivity.class);
+                intent.putExtra("extra_article_id", data.getArticle_id());
+                intent.putExtra("extra_article", data.getArticle().toJSONString());
                 break;
             default:
                 return;
