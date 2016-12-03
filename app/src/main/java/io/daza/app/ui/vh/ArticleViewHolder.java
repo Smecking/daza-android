@@ -14,6 +14,7 @@ import java.util.Locale;
 
 import io.daza.app.R;
 import io.daza.app.model.Article;
+import io.daza.app.util.Thumbnail;
 
 public class ArticleViewHolder extends RecyclerView.ViewHolder {
 
@@ -37,14 +38,16 @@ public class ArticleViewHolder extends RecyclerView.ViewHolder {
     public void bind(Article data) {
         Glide
                 .with(itemView.getContext())
-                .load(data.getImage_url())
+                .load(new Thumbnail(data.getImage_url()).small())
                 .centerCrop()
                 .placeholder(R.mipmap.placeholder_image)
                 .crossFade()
                 .into(mIvImage);
         ViewUtils.setGone(mIvImage, TextUtils.isEmpty(data.getImage_url()));
         mTvTitle.setText(data.getTitle());
-        mTvTopicName.setText(data.getTopic().getName());
+        if (data.getTopic() != null) {
+            mTvTopicName.setText(data.getTopic().getName());
+        }
         mtvPublishedAt.setText(data.getPublished_at());
         mTvCommentCount.setText(String.format(Locale.US, "%d评论", data.getComment_count()));
         mTvViewCount.setText(String.format(Locale.US, "%d阅读", data.getView_count()));

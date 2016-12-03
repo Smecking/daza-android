@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide;
 
 import io.daza.app.R;
 import io.daza.app.model.Topic;
+import io.daza.app.util.Thumbnail;
 
 public class TopicViewHolder extends RecyclerView.ViewHolder {
 
@@ -26,7 +27,7 @@ public class TopicViewHolder extends RecyclerView.ViewHolder {
     public void bind(Topic data) {
         Glide
                 .with(itemView.getContext())
-                .load(data.getImage_url())
+                .load(new Thumbnail(data.getImage_url()).small())
                 .centerCrop()
                 .placeholder(R.mipmap.placeholder_image)
                 .crossFade()

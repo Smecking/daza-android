@@ -23,17 +23,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import io.daza.app.R;
-import io.daza.app.api.ApiClient;
 import io.daza.app.model.Result;
 import io.daza.app.model.Topic;
 import io.daza.app.ui.base.BaseListFragment;
 import io.daza.app.ui.vh.TopicViewHolder;
 import retrofit2.Response;
 
-public class HomeExploreFragment extends BaseListFragment<TopicViewHolder, Topic, Result<ArrayList<Topic>>> {
+import static io.daza.app.api.ApiClient.API;
+
+public class HomeExploreFragment extends BaseListFragment<TopicViewHolder, Topic, Result<List<Topic>>> {
 
     public HomeExploreFragment() {
         // Required empty public constructor
@@ -78,24 +79,16 @@ public class HomeExploreFragment extends BaseListFragment<TopicViewHolder, Topic
     }
 
     @Override
-    public Result<ArrayList<Topic>> onLoadInBackground() throws Exception {
-//        Result<ArrayList<Topic>> result = new Result<>();
-//
-//        ArrayList<Topic> data = new ArrayList<>();
-//        for (int i = 0; i < 100; i++) {
-//            data.add(new Topic());
-//        }
-//        result.setData(data);
-//
-//        return result;
-        ApiClient apiClient = new ApiClient();
-        Response<Result<ArrayList<Topic>>> response = apiClient.api.getTopics(1).execute();
+    public Result<List<Topic>> onLoadInBackground() throws Exception {
+        Response<Result<List<Topic>>> response = API.getTopics(1).execute();
         return response.body();
     }
 
     @Override
-    public void onLoadComplete(Result<ArrayList<Topic>> data) {
-        getItemsSource().addAll(data.getData());
+    public void onLoadComplete(Result<List<Topic>> data) {
+        if (data.isSuccessful()) {
+            getItemsSource().addAll(data.getData());
+        }
         getAdapter().notifyDataSetChanged();
         super.onRefreshComplete();
     }
@@ -103,6 +96,9 @@ public class HomeExploreFragment extends BaseListFragment<TopicViewHolder, Topic
     @Override
     protected void onListItemClick(RecyclerView rv, View v, int position, long id) {
         Intent intent = new Intent(getActivity(), TopicDetailActivity.class);
+        Topic topic = getItemsSource().get(position);
+        intent.putExtra("extra_topic_id", topic.getId());
+        intent.putExtra("extra_topic", topic.toJSONString());
         startActivity(intent);
     }
 }

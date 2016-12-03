@@ -23,7 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import io.daza.app.R;
 import io.daza.app.api.ApiClient;
@@ -34,7 +34,9 @@ import io.daza.app.ui.base.BaseListFragment;
 import io.daza.app.ui.vh.ArticleViewHolder;
 import retrofit2.Response;
 
-public class ArticlesFragment extends BaseListFragment<ArticleViewHolder, Article, Result<ArrayList<Article>>> {
+import static io.daza.app.api.ApiClient.API;
+
+public class ArticlesFragment extends BaseListFragment<ArticleViewHolder, Article, Result<List<Article>>> {
 
     private Category mCategory;
 
@@ -84,24 +86,16 @@ public class ArticlesFragment extends BaseListFragment<ArticleViewHolder, Articl
     }
 
     @Override
-    public Result<ArrayList<Article>> onLoadInBackground() throws Exception {
-//        Result<ArrayList<Article>> result = new Result<>();
-//
-//        ArrayList<Article> data = new ArrayList<>();
-//        for (int i = 0; i < 100; i++) {
-//            data.add(new Article());
-//        }
-//        result.setData(data);
-//
-//        return result;
-        ApiClient apiClient = new ApiClient();
-        Response<Result<ArrayList<Article>>> response = apiClient.api.getArticles(1, mCategory.getId(), mCategory.getSlug()).execute();
+    public Result<List<Article>> onLoadInBackground() throws Exception {
+        Response<Result<List<Article>>> response = API.getArticles(1, mCategory.getId(), mCategory.getSlug()).execute();
         return response.body();
     }
 
     @Override
-    public void onLoadComplete(Result<ArrayList<Article>> data) {
-        getItemsSource().addAll(data.getData());
+    public void onLoadComplete(Result<List<Article>> data) {
+        if (data.isSuccessful()) {
+            getItemsSource().addAll(data.getData());
+        }
         getAdapter().notifyDataSetChanged();
         super.onRefreshComplete();
     }

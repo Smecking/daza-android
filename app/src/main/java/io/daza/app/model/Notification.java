@@ -21,9 +21,13 @@ public class Notification extends Model {
     private int user_id;            // 用户Id
     private boolean unread;         // 通知未读
     private String reason;          // 原因 = ['followed', 'subscribed', 'upvoted', 'comment', 'mention']
+    private User from_user;
     private int from_user_id;       // 来自用户Id
+    private Topic topic;
     private int topic_id;           // 主题Id
+    private Article article;
     private int article_id;         // 文章Id
+    private ArticleComment article_comment;
     private int article_comment_id; // 文章评论Id
     private String title;           // 标题
     private String content;         // 内容
@@ -52,12 +56,28 @@ public class Notification extends Model {
         this.reason = reason;
     }
 
+    public User getFrom_user() {
+        return from_user;
+    }
+
+    public void setFrom_user(User from_user) {
+        this.from_user = from_user;
+    }
+
     public int getFrom_user_id() {
         return from_user_id;
     }
 
     public void setFrom_user_id(int from_user_id) {
         this.from_user_id = from_user_id;
+    }
+
+    public Topic getTopic() {
+        return topic;
+    }
+
+    public void setTopic(Topic topic) {
+        this.topic = topic;
     }
 
     public int getTopic_id() {
@@ -68,12 +88,28 @@ public class Notification extends Model {
         this.topic_id = topic_id;
     }
 
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
+    }
+
     public int getArticle_id() {
         return article_id;
     }
 
     public void setArticle_id(int article_id) {
         this.article_id = article_id;
+    }
+
+    public ArticleComment getArticle_comment() {
+        return article_comment;
+    }
+
+    public void setArticle_comment(ArticleComment article_comment) {
+        this.article_comment = article_comment;
     }
 
     public int getArticle_comment_id() {

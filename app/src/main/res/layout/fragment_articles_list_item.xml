@@ -19,7 +19,7 @@
             android:id="@+id/iv_image"
             android:layout_width="124dp"
             android:layout_height="70dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="12dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/placeholder_image"
             android:visibility="visible" />
@@ -36,7 +36,7 @@
                 android:lines="3"
                 android:text="N/A"
                 android:textColor="@android:color/black"
-                android:textSize="16sp" />
+                android:textSize="15sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -49,13 +49,13 @@
                     android:ellipsize="end"
                     android:lines="1"
                     android:text="N/A"
-                    android:textSize="10sp" />
+                    android:textSize="9sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" · "
-                    android:textSize="10sp" />
+                    android:textSize="9sp" />
 
                 <TextView
                     android:id="@+id/tv_published_at"
@@ -65,7 +65,7 @@
                     android:ellipsize="end"
                     android:lines="1"
                     android:text="N/A"
-                    android:textSize="10sp" />
+                    android:textSize="9sp" />
 
 
                 <TextView

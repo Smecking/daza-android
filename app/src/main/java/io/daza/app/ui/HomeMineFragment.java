@@ -23,20 +23,42 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+
+import org.blankapp.annotation.ViewById;
+import org.blankapp.util.ViewUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import io.daza.app.R;
-import io.daza.app.api.ApiClient;
-import io.daza.app.model.Result;
+import io.daza.app.event.LoginStatusChangedEvent;
 import io.daza.app.model.User;
 import io.daza.app.ui.base.BaseFragment;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.daza.app.util.Auth;
+import io.daza.app.util.Thumbnail;
 
 public class HomeMineFragment extends BaseFragment {
 
-    private Button mLogin;
+    @ViewById(R.id.btn_profile)
+    private LinearLayout mBtnProfile;
+    @ViewById(R.id.iv_avatar)
+    private ImageView mIvAvatar;
+    @ViewById(R.id.tv_name)
+    private TextView mTvName;
+    @ViewById(R.id.tv_bio)
+    private TextView mTvBio;
+    @ViewById(R.id.btn_own_topics)
+    private Button mBtnOwnTopics;
+    @ViewById(R.id.btn_own_subscribes)
+    private Button mBtnOwnSubscribes;
+    @ViewById(R.id.btn_own_upvotes)
+    private Button mBtnOwnUpvotes;
+    @ViewById(R.id.btn_settings)
     private Button mBtnSettings;
 
     public HomeMineFragment() {
@@ -66,28 +88,64 @@ public class HomeMineFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mLogin = (Button) view.findViewById(R.id.btn_login);
-        mLogin.setOnClickListener(new View.OnClickListener() {
+        mBtnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(HomeMineFragment.this.getActivity(), LoginActivity.class);
-//                startActivity(intent);
-                ApiClient apiClient = new ApiClient();
-                apiClient.api.login("1","2").enqueue(new Callback<Result<User>>() {
-                    @Override
-                    public void onResponse(Call<Result<User>> call, Response<Result<User>> response) {
-//                        Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure(Call<Result<User>> call, Throwable t) {
-                        Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                if (!Auth.check()) {
+                    Intent intent = new Intent(HomeMineFragment.this.getActivity(), LoginActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(HomeMineFragment.this.getActivity(), ModifyProfileActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
-        mBtnSettings = (Button) view.findViewById(R.id.btn_settings);
+        mBtnOwnTopics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!Auth.check()) {
+                    Intent intent = new Intent(HomeMineFragment.this.getActivity(), LoginActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(HomeMineFragment.this.getActivity(), OwnTopicsActivity.class);
+                    intent.putExtra("extra_user", Auth.user().toJSONString());
+                    intent.putExtra("extra_user_id", Auth.id());
+                    startActivity(intent);
+                }
+            }
+        });
+
+        mBtnOwnSubscribes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!Auth.check()) {
+                    Intent intent = new Intent(HomeMineFragment.this.getActivity(), LoginActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(HomeMineFragment.this.getActivity(), OwnSubscribesActivity.class);
+                    intent.putExtra("extra_user", Auth.user().toJSONString());
+                    intent.putExtra("extra_user_id", Auth.id());
+                    startActivity(intent);
+                }
+            }
+        });
+
+        mBtnOwnUpvotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!Auth.check()) {
+                    Intent intent = new Intent(HomeMineFragment.this.getActivity(), LoginActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(HomeMineFragment.this.getActivity(), OwnUpvoteArticlesActivity.class);
+                    intent.putExtra("extra_user", Auth.user().toJSONString());
+                    intent.putExtra("extra_user_id", Auth.id());
+                    startActivity(intent);
+                }
+            }
+        });
+
         mBtnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,5 +153,45 @@ public class HomeMineFragment extends BaseFragment {
                 startActivity(intent);
             }
         });
+
+        initView();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    private void initView() {
+        if (Auth.check()) {
+            User user = Auth.user();
+            Glide
+                    .with(getActivity())
+                    .load(new Thumbnail(user.getAvatar_url()).small())
+                    .centerCrop()
+                    .placeholder(R.mipmap.placeholder_image)
+                    .crossFade()
+                    .into(mIvAvatar);
+            mTvName.setText(user.getName());
+            mTvBio.setText(user.getBio());
+            ViewUtils.setGone(mTvBio, false);
+        } else {
+            mIvAvatar.setImageResource(R.mipmap.placeholder_image);
+            mTvName.setText("未登录");
+            mTvBio.setText("");
+            ViewUtils.setGone(mTvBio, true);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LoginStatusChangedEvent event) {
+        this.initView();
     }
 }

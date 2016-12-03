@@ -23,16 +23,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 import io.daza.app.R;
+import io.daza.app.event.LoginStatusChangedEvent;
 import io.daza.app.model.Notification;
 import io.daza.app.model.Result;
-import io.daza.app.ui.base.BaseFragment;
 import io.daza.app.ui.base.BaseListFragment;
 import io.daza.app.ui.vh.NotificationViewHolder;
+import retrofit2.Response;
 
-public class HomeInboxFragment extends BaseListFragment<NotificationViewHolder, Notification, Result<ArrayList<Notification>>>{
+import static io.daza.app.api.ApiClient.API;
+
+public class HomeInboxFragment extends
+        BaseListFragment<NotificationViewHolder, Notification, Response<Result<List<Notification>>>> {
 
     public HomeInboxFragment() {
         // Required empty public constructor
@@ -64,27 +72,41 @@ public class HomeInboxFragment extends BaseListFragment<NotificationViewHolder, 
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public NotificationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_home_inbox_list_item, parent, false);
         return new NotificationViewHolder(itemView);
     }
 
     @Override
-    public Result<ArrayList<Notification>> onLoadInBackground() throws Exception {
-        Result<ArrayList<Notification>> result = new Result<>();
-
-        ArrayList<Notification> data = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            data.add(new Notification());
-        }
-        result.setData(data);
-
-        return result;
+    public void onBindViewHolder(NotificationViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+        Notification data = getItemsSource().get(position);
+        holder.bind(data);
     }
 
     @Override
-    public void onLoadComplete(Result<ArrayList<Notification>> data) {
-        getItemsSource().addAll(data.getData());
+    public Response<Result<List<Notification>>> onLoadInBackground() throws Exception {
+        return API.getNotifications(1, null).execute();
+    }
+
+    @Override
+    public void onLoadComplete(Response<Result<List<Notification>>> response) {
+        Result<List<Notification>> result = response.body();
+        if (response.isSuccessful() && result.isSuccessful()) {
+            getItemsSource().addAll(result.getData());
+        }
         getAdapter().notifyDataSetChanged();
         super.onRefreshComplete();
     }
@@ -115,5 +137,10 @@ public class HomeInboxFragment extends BaseListFragment<NotificationViewHolder, 
                 return;
         }
         startActivity(intent);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LoginStatusChangedEvent event) {
+        // Do something
     }
 }

@@ -29,6 +29,10 @@ public class Result<T> {
     public Result() {
     }
 
+    public boolean isSuccessful() {
+        return this.code == 0;
+    }
+
     public int getCode() {
         return code;
     }
