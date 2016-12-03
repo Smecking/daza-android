@@ -17,15 +17,61 @@
 package io.daza.app.ui;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import java.util.List;
 
 import io.daza.app.R;
-import io.daza.app.ui.base.BaseActivity;
+import io.daza.app.model.Article;
+import io.daza.app.model.ArticleComment;
+import io.daza.app.model.Model;
+import io.daza.app.model.Result;
+import io.daza.app.ui.base.BaseListActivity;
+import io.daza.app.ui.vh.ArticleCommentViewHolder;
+import retrofit2.Response;
 
-public class ArticleCommentsActivity extends BaseActivity {
+import static io.daza.app.api.ApiClient.API;
+
+public class ArticleCommentsActivity extends BaseListActivity<ArticleCommentViewHolder, ArticleComment, Result<List<ArticleComment>>> {
+
+    private int mArticleId;
+    private Article mArticle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_acticle_comments);
+
+        mArticleId = getIntent().getIntExtra("extra_article_id", 0);
+        mArticle = Model.parseObject(getIntent().getStringExtra("extra_article"), Article.class);
+    }
+
+    @Override
+    public ArticleCommentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_acticle_comments_list_item, parent, false);
+        return new ArticleCommentViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(ArticleCommentViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+        holder.bind(getItemsSource().get(position));
+    }
+
+    @Override
+    public Result<List<ArticleComment>> onLoadInBackground() throws Exception {
+        Response<Result<List<ArticleComment>>> response = API.getArticleComments(mArticleId, 1).execute();
+        return response.body();
+    }
+
+    @Override
+    public void onLoadComplete(Result<List<ArticleComment>> data) {
+        if (data.isSuccessful()) {
+            getItemsSource().addAll(data.getData());
+        }
+        getAdapter().notifyDataSetChanged();
+        super.onRefreshComplete();
     }
 }
