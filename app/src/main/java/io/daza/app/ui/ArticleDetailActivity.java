@@ -32,6 +32,7 @@ import io.daza.app.model.Model;
 
 public class ArticleDetailActivity extends InAppBrowserActivity {
 
+    private int mArticleId;
     private Article mArticle;
 
     @ViewById(R.id.btn_create_comment)
@@ -48,6 +49,7 @@ public class ArticleDetailActivity extends InAppBrowserActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_acticle_detail);
 
+        mArticleId = getIntent().getIntExtra("extra_article_id", 0);
         mArticle = Model.parseObject(getIntent().getStringExtra("extra_article"), Article.class);
 
         loadUrl(BuildConfig.WEB_BASE_URL + "/in-app/articles/" + mArticle.getId());
