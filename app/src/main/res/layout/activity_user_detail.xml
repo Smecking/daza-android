@@ -84,7 +84,7 @@
             android:gravity="left|center_vertical"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:text="我的主题"
+            android:text="TA的主题"
             android:textSize="16sp" />
 
         <View
@@ -102,7 +102,7 @@
             android:gravity="left|center_vertical"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:text="我订阅的"
+            android:text="TA订阅的"
             android:textSize="16sp" />
 
         <View
@@ -120,7 +120,7 @@
             android:gravity="left|center_vertical"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:text="我赞过的"
+            android:text="TA赞过的"
             android:textSize="16sp" />
 
         <View

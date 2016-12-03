@@ -115,6 +115,12 @@ public class UserDetailActivity extends BaseActivity {
             }
         });
 
+        if (Auth.check() && mUserId == Auth.id()) {
+            mBtnOwnTopics.setText("我的主题");
+            mBtnOwnSubscribes.setText("我订阅的");
+            mBtnOwnUpvotes.setText("我赞过的");
+        }
+
         initView();
     }
 
