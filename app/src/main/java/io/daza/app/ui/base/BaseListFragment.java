@@ -42,6 +42,6 @@ public abstract class BaseListFragment<VH extends RecyclerView.ViewHolder, Item,
 
     @Override
     public void onLoadError(Exception e) {
-
+        e.printStackTrace();
     }
 }

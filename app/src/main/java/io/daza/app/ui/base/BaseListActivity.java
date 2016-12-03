@@ -56,6 +56,6 @@ public abstract class BaseListActivity<VH extends RecyclerView.ViewHolder, Item,
 
     @Override
     public void onLoadError(Exception e) {
-
+        e.printStackTrace();
     }
 }
