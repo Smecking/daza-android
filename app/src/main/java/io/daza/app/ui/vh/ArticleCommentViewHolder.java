@@ -12,7 +12,7 @@ import io.daza.app.model.ArticleComment;
 import io.daza.app.model.User;
 import io.daza.app.util.Thumbnail;
 
-public class ArticleCommentViewHolder extends RecyclerView.ViewHolder {
+public class ArticleCommentViewHolder extends BaseViewHolder {
 
     private ImageView mIvAvatar;
     private TextView mTvContent;

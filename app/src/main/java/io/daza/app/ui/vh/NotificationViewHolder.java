@@ -1,6 +1,5 @@
 package io.daza.app.ui.vh;
 
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,7 +15,7 @@ import io.daza.app.model.Topic;
 import io.daza.app.model.User;
 import io.daza.app.util.Thumbnail;
 
-public class NotificationViewHolder extends RecyclerView.ViewHolder {
+public class NotificationViewHolder extends BaseViewHolder {
 
     private ImageView mIvAvatar;
     private TextView mTvContent;

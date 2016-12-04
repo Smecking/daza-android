@@ -16,7 +16,7 @@ import io.daza.app.R;
 import io.daza.app.model.Article;
 import io.daza.app.util.Thumbnail;
 
-public class ArticleViewHolder extends RecyclerView.ViewHolder {
+public class ArticleViewHolder extends BaseViewHolder {
 
     private ImageView mIvImage;
     private TextView mTvTitle;
