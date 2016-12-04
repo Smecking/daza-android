@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory android:title="消息">
+        <Preference
+            android:title="消息设置"
+            app:key="key_notification_settings" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="账号">
+        <Preference
+            android:title="账号与安全"
+            app:key="key_account" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="其他">
+        <Preference
+            android:title="意见反馈"
+            app:key="key_feedback" />
+        <Preference
+            android:title="关于我们"
+            app:key="key_about" />
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="当前登录用户">
+        <Preference
+            android:title="退出"
+            app:key="key_logout" />
+
+    </PreferenceCategory>
+</PreferenceScreen>
