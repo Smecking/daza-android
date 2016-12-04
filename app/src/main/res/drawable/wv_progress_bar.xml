@@ -5,10 +5,10 @@
         <shape>
             <gradient
                 android:angle="270"
-                android:centerColor="#ffcccccc"
+                android:centerColor="#BDBDBD"
                 android:centerY="0.75"
-                android:endColor="#ffcccccc"
-                android:startColor="#ffcccccc" />
+                android:endColor="#BDBDBD"
+                android:startColor="#BDBDBD" />
         </shape>
     </item>
 
@@ -17,10 +17,10 @@
             <shape>
                 <gradient
                     android:angle="270"
-                    android:centerColor="#aaffffff"
+                    android:centerColor="#ffffff"
                     android:centerY="0.75"
-                    android:endColor="#aaffffff"
-                    android:startColor="#aaffffff" />
+                    android:endColor="#ffffff"
+                    android:startColor="#ffffff" />
             </shape>
         </clip>
     </item>
@@ -30,10 +30,10 @@
             <shape>
                 <gradient
                     android:angle="270"
-                    android:centerColor="#aaffffff"
+                    android:centerColor="#ffffff"
                     android:centerY="0.75"
-                    android:endColor="#aaffffff"
-                    android:startColor="#aaffffff" />
+                    android:endColor="#ffffff"
+                    android:startColor="#ffffff" />
             </shape>
         </clip>
     </item>

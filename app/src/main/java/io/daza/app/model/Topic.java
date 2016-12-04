@@ -18,8 +18,8 @@ package io.daza.app.model;
 
 public class Topic extends Model {
 
-
     private String short_id;        // ShortId
+    private User user;
     private int user_id;            // 用户Id
     private int category_id;        // 分类Id
     private String name;            // 名称
@@ -39,6 +39,14 @@ public class Topic extends Model {
 
     public void setShort_id(String short_id) {
         this.short_id = short_id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getUser_id() {
