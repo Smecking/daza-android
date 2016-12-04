@@ -25,5 +25,6 @@
     <string name="action_tab_explore">探索</string>
     <string name="action_tab_inbox">消息</string>
     <string name="action_tab_mine">我的</string>
+    <string name="just_now">刚刚</string>
 
 </resources>

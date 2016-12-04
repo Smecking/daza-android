@@ -59,6 +59,7 @@ public class HomeInboxFragment extends
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -94,7 +95,7 @@ public class HomeInboxFragment extends
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_mark_as_read) {
-            // Do something
+            // TODO: Do something
             return true;
         }
         return super.onOptionsItemSelected(item);

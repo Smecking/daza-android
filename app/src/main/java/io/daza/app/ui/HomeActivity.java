@@ -23,7 +23,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -40,7 +39,6 @@ import io.daza.app.R;
 import io.daza.app.event.LoginStatusChangedEvent;
 import io.daza.app.ui.adapters.HomeBottomNavigationAdapter;
 import io.daza.app.ui.base.BaseActivity;
-import io.yunba.android.manager.YunBaManager;
 
 import static io.daza.app.ui.adapters.HomeBottomNavigationAdapter.HOME_TAB_INDEX;
 import static io.daza.app.ui.adapters.HomeBottomNavigationAdapter.HOME_TAB_EXPLORE;

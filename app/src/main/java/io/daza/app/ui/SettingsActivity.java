@@ -26,8 +26,14 @@ import android.support.v7.preference.Preference;
 
 import io.daza.app.BuildConfig;
 import io.daza.app.R;
+import io.daza.app.model.Result;
 import io.daza.app.ui.base.BaseActivity;
 import io.daza.app.util.Auth;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static io.daza.app.api.ApiClient.API;
 
 public class SettingsActivity extends BaseActivity {
 
@@ -81,12 +87,32 @@ public class SettingsActivity extends BaseActivity {
                     intent = new Intent(getActivity(), AboutActivity.class);
                     break;
                 case KEY_LOGOUT:
-                    break;
+                    this.logout();
+                    return false;
                 default:
                     return false;
             }
             startActivity(intent);
             return true;
+        }
+
+        private void logout() {
+            API.logout().enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+
+                }
+            });
+            Auth.jwtToken(null);
+            Auth.user(null);
+            Auth.userConfigs(null);
+            getActivity().finish();
+            getActivity().overridePendingTransition(0, 0);
         }
     }
 

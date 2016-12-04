@@ -29,6 +29,7 @@ import java.util.Locale;
 
 import io.daza.app.R;
 import io.daza.app.model.Article;
+import io.daza.app.util.DateUtils;
 import io.daza.app.util.Thumbnail;
 
 public class ArticleViewHolder extends BaseViewHolder {
@@ -36,7 +37,7 @@ public class ArticleViewHolder extends BaseViewHolder {
     private ImageView mIvImage;
     private TextView mTvTitle;
     private TextView mTvTopicName;
-    private TextView mtvPublishedAt;
+    private TextView mTvPublishedAt;
     private TextView mTvCommentCount;
     private TextView mTvViewCount;
 
@@ -45,7 +46,7 @@ public class ArticleViewHolder extends BaseViewHolder {
         mIvImage = (ImageView) itemView.findViewById(R.id.iv_image);
         mTvTitle = (TextView) itemView.findViewById(R.id.tv_title);
         mTvTopicName = (TextView) itemView.findViewById(R.id.tv_topic_name);
-        mtvPublishedAt = (TextView) itemView.findViewById(R.id.tv_published_at);
+        mTvPublishedAt = (TextView) itemView.findViewById(R.id.tv_published_at);
         mTvCommentCount = (TextView) itemView.findViewById(R.id.tv_comment_count);
         mTvViewCount = (TextView) itemView.findViewById(R.id.tv_view_count);
     }
@@ -65,7 +66,8 @@ public class ArticleViewHolder extends BaseViewHolder {
         } else {
             mTvTopicName.setText("");
         }
-        mtvPublishedAt.setText(data.getPublished_at());
+
+        mTvPublishedAt.setText(DateUtils.toTimeAgo(itemView.getContext(), data.getPublished_at()));
         mTvCommentCount.setText(String.format(Locale.US, "%d评论", data.getComment_count()));
         mTvViewCount.setText(String.format(Locale.US, "%d阅读", data.getView_count()));
     }
