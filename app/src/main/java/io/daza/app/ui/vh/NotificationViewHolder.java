@@ -1,5 +1,6 @@
 package io.daza.app.ui.vh;
 
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -63,5 +64,6 @@ public class NotificationViewHolder extends BaseViewHolder {
                 break;
         }
         mTvContent.setText(content);
+        mTvContent.setTextColor(data.isUnread() ? Color.parseColor("#000000") : Color.parseColor("#aaaaaa"));
     }
 }
