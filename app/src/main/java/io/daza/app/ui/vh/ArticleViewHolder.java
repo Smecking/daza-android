@@ -47,6 +47,8 @@ public class ArticleViewHolder extends BaseViewHolder {
         mTvTitle.setText(data.getTitle());
         if (data.getTopic() != null) {
             mTvTopicName.setText(data.getTopic().getName());
+        } else {
+            mTvTopicName.setText("");
         }
         mtvPublishedAt.setText(data.getPublished_at());
         mTvCommentCount.setText(String.format(Locale.US, "%d评论", data.getComment_count()));
