@@ -17,16 +17,23 @@
 package io.daza.app.ui;
 
 import android.os.Bundle;
+import android.webkit.WebView;
 
+import io.daza.app.BuildConfig;
 import io.daza.app.R;
 import io.daza.app.ui.base.BaseWebViewActivity;
 
-public class AboutActivity extends BaseWebViewActivity {
+public class AboutActivity extends InAppBrowserActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+
+        loadUrl(BuildConfig.WEB_BASE_URL + "/in-app/articles/about");
     }
 
+    @Override
+    public void onReceivedTitle(WebView view, String title) {
+    }
 }
