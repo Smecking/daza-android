@@ -81,6 +81,7 @@ public class AppStart extends AppCompatActivity implements Animation.AnimationLi
     public void onAnimationEnd(Animation animation) {
         Intent intent = new Intent(this, HomeActivity.class);
         this.startActivity(intent);
+        this.overridePendingTransition(0, 0);
         this.finish();
     }
 
