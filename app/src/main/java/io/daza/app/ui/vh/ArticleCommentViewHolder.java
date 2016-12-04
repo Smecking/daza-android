@@ -22,24 +22,33 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import org.blankapp.annotation.ViewById;
+
 import io.daza.app.R;
 import io.daza.app.model.ArticleComment;
 import io.daza.app.model.User;
+import io.daza.app.util.DateUtils;
 import io.daza.app.util.Thumbnail;
 
 public class ArticleCommentViewHolder extends BaseViewHolder {
 
+    @ViewById(R.id.iv_avatar)
     private ImageView mIvAvatar;
+    @ViewById(R.id.tv_name)
+    private TextView mTvName;
+    @ViewById(R.id.tv_content)
     private TextView mTvContent;
+    @ViewById(R.id.tv_created_at)
+    private TextView mTvCreatedAt;
+
+    private OnClickListener mListener;
 
     public ArticleCommentViewHolder(View itemView) {
         super(itemView);
-        mIvAvatar = (ImageView) itemView.findViewById(R.id.iv_avatar);
-        mTvContent = (TextView) itemView.findViewById(R.id.tv_content);
     }
 
     public void bind(ArticleComment data) {
-        User fromUser = data.getUser();
+        final User fromUser = data.getUser();
         Glide
                 .with(itemView.getContext())
                 .load(new Thumbnail(fromUser.getAvatar_url()).small())
@@ -47,6 +56,34 @@ public class ArticleCommentViewHolder extends BaseViewHolder {
                 .placeholder(R.mipmap.placeholder_image)
                 .crossFade()
                 .into(mIvAvatar);
+        mTvName.setText(fromUser.getName());
+        mTvContent.setText(data.getContent());
+        mTvCreatedAt.setText(DateUtils.toTimeAgo(itemView.getContext(), data.getCreated_at()));
 
+        mIvAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null) {
+                    mListener.onClickUser(fromUser);
+                }
+            }
+        });
+        mTvName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null) {
+                    mListener.onClickUser(fromUser);
+                }
+            }
+        });
     }
+
+    public void setListener(OnClickListener listener) {
+        this.mListener = listener;
+    }
+
+    public static interface OnClickListener {
+        void onClickUser(User user);
+    }
+
 }

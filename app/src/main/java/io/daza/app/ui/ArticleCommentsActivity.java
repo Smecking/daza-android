@@ -16,6 +16,7 @@
 
 package io.daza.app.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,13 +29,14 @@ import io.daza.app.model.Article;
 import io.daza.app.model.ArticleComment;
 import io.daza.app.model.Model;
 import io.daza.app.model.Result;
+import io.daza.app.model.User;
 import io.daza.app.ui.base.BaseListActivity;
 import io.daza.app.ui.vh.ArticleCommentViewHolder;
 import retrofit2.Response;
 
 import static io.daza.app.api.ApiClient.API;
 
-public class ArticleCommentsActivity extends BaseListActivity<ArticleCommentViewHolder, ArticleComment, Result<List<ArticleComment>>> {
+public class ArticleCommentsActivity extends BaseListActivity<ArticleCommentViewHolder, ArticleComment, Result<List<ArticleComment>>> implements ArticleCommentViewHolder.OnClickListener {
 
     private int mArticleId;
     private Article mArticle;
@@ -60,6 +62,7 @@ public class ArticleCommentsActivity extends BaseListActivity<ArticleCommentView
     public void onBindViewHolder(ArticleCommentViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
         holder.bind(getItemsSource().get(position));
+        holder.setListener(this);
     }
 
     @Override
@@ -78,5 +81,13 @@ public class ArticleCommentsActivity extends BaseListActivity<ArticleCommentView
             getItemsSource().addAll(data.getData());
         }
         super.onRefreshComplete();
+    }
+
+    @Override
+    public void onClickUser(User user) {
+        Intent intent = new Intent(this, UserDetailActivity.class);
+        intent.putExtra("extra_user_id", user.getId());
+        intent.putExtra("extra_user", user.toJSONString());
+        startActivity(intent);
     }
 }
