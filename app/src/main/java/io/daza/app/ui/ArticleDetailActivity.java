@@ -29,6 +29,7 @@ import io.daza.app.BuildConfig;
 import io.daza.app.R;
 import io.daza.app.model.Article;
 import io.daza.app.model.Model;
+import io.daza.app.util.Auth;
 
 public class ArticleDetailActivity extends InAppBrowserActivity {
 
@@ -71,6 +72,27 @@ public class ArticleDetailActivity extends InAppBrowserActivity {
                 intent.putExtra("extra_article_id", mArticleId);
                 intent.putExtra("extra_article", mArticle.toJSONString());
                 startActivity(intent);
+            }
+        });
+
+        mBtnUpvote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        mBtnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = BuildConfig.WEB_BASE_URL + "/articles/" + mArticleId;
+                String content = "来自「daza.io」的文章《" + mArticle.getTitle() + "》";
+
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, content + "\n" + url);
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
             }
         });
     }

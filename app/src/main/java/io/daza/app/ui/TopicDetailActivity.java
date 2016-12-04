@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import io.daza.app.BuildConfig;
 import io.daza.app.R;
 import io.daza.app.model.Article;
 import io.daza.app.model.Model;
@@ -61,6 +62,7 @@ public class TopicDetailActivity extends BaseListActivity<BaseViewHolder, Articl
         getAdapter().notifyDataSetChanged();
 
         this.initLoader();
+        this.getPullToRefreshLayout().setRefreshing(true);
     }
 
     @Override
@@ -72,7 +74,14 @@ public class TopicDetailActivity extends BaseListActivity<BaseViewHolder, Articl
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_share) {
+            String url = BuildConfig.WEB_BASE_URL + "/topics/" + mTopicId;
+            String content = "来自「daza.io」的主题《" + mTopic.getName() + "》";
 
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, content + "\n" + url);
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);
         }
         return super.onOptionsItemSelected(item);
     }
