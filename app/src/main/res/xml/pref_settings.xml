@@ -4,27 +4,29 @@
     <PreferenceCategory android:title="消息">
         <Preference
             android:title="消息设置"
-            app:key="key_notification_settings" />
+            app:key="key_notification_settings"
+            app:widgetLayout="@layout/preference_arrow_right" />
     </PreferenceCategory>
+
     <PreferenceCategory android:title="账号">
         <Preference
             android:title="账号与安全"
-            app:key="key_account" />
+            app:key="key_account"
+            app:widgetLayout="@layout/preference_arrow_right" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="其他">
         <Preference
             android:title="意见反馈"
-            app:key="key_feedback" />
+            app:key="key_feedback"
+            app:widgetLayout="@layout/preference_arrow_right" />
         <Preference
             android:title="关于我们"
-            app:key="key_about" />
-
-    </PreferenceCategory>
-    <PreferenceCategory android:title="当前登录用户">
+            app:key="key_about"
+            app:widgetLayout="@layout/preference_arrow_right" />
         <Preference
             android:title="退出"
             app:key="key_logout" />
-
     </PreferenceCategory>
+
 </PreferenceScreen>

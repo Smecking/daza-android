@@ -8,6 +8,7 @@
         app:key="key_email" />
     <Preference
         android:title="修改账号密码"
-        app:key="key_modify_password"  />
+        app:key="key_modify_password"
+        app:widgetLayout="@layout/preference_arrow_right" />
 
 </PreferenceScreen>
