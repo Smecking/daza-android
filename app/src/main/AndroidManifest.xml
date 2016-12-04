@@ -94,7 +94,15 @@
             android:label="@string/title_activity_own_upvote_articles" />
         <activity
             android:name=".ui.SearchActivity"
-            android:label="@string/title_activity_search" />
+            android:label="@string/title_activity_search"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.TagDetailActivity"
             android:label="@string/title_activity_tag_detail" />
