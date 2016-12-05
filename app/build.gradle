@@ -27,9 +27,9 @@ android {
             buildConfigField 'String', 'DOMAIN_NAME', '"daza.io"'
             buildConfigField 'String', 'WEB_BASE_URL', '"https://daza.io"'
             buildConfigField 'String', 'API_BASE_URL', '"https://api.daza.io"'
-            buildConfigField 'String', 'EMAIL_HI', '"hi@daza.i"'
-            buildConfigField 'String', 'EMAIL_REPORT', '"report@daza.i"'
-            buildConfigField 'String', 'EMAIL_SUPPORT', '"support@daza.i"'
+            buildConfigField 'String', 'EMAIL_HI', '"hi@daza.io"'
+            buildConfigField 'String', 'EMAIL_REPORT', '"report@daza.io"'
+            buildConfigField 'String', 'EMAIL_SUPPORT', '"support@daza.io"'
             buildConfigField 'String', 'QINIU_DOMAIN', QINIU_DOMAIN
 
             minifyEnabled false
@@ -39,9 +39,9 @@ android {
             buildConfigField 'String', 'DOMAIN_NAME', '"daza.io"'
             buildConfigField 'String', 'WEB_BASE_URL', '"https://daza.io"'
             buildConfigField 'String', 'API_BASE_URL', '"https://api.daza.io"'
-            buildConfigField 'String', 'EMAIL_HI', '"hi@daza.i"'
-            buildConfigField 'String', 'EMAIL_REPORT', '"report@daza.i"'
-            buildConfigField 'String', 'EMAIL_SUPPORT', '"support@daza.i"'
+            buildConfigField 'String', 'EMAIL_HI', '"hi@daza.io"'
+            buildConfigField 'String', 'EMAIL_REPORT', '"report@daza.io"'
+            buildConfigField 'String', 'EMAIL_SUPPORT', '"support@daza.io"'
             buildConfigField 'String', 'QINIU_DOMAIN', QINIU_DOMAIN
         }
     }

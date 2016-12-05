@@ -58,13 +58,8 @@ public class InAppBrowserActivity extends BaseActivity {
                     return true;
                 }
             } else if (url.startsWith("mailto:")) {
-                MailTo mailTo = MailTo.parse(url);
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[] { mailTo.getTo() });
-                intent.putExtra(Intent.EXTRA_TEXT, mailTo.getBody());
-                intent.putExtra(Intent.EXTRA_SUBJECT, mailTo.getSubject());
-                intent.putExtra(Intent.EXTRA_CC, mailTo.getCc());
-                intent.setType("message/rfc822");
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
                 startActivity(intent);
                 return true;
             } else if (url.startsWith("daza://")) {
