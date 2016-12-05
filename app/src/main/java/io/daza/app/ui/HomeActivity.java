@@ -71,6 +71,7 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
     @ViewById(R.id.bottom_navigation)
     private BottomNavigationView mBottomNavigationView;
 
+    private boolean mIgnorePerformClick = false;
     private HomeBottomNavigationAdapter mHomeBottomNavigationAdapter;
 
     @Override
@@ -137,10 +138,12 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
 
     @Override
     public void onPageSelected(int position) {
-        View view = mBottomNavigationView.getChildAt(0);
-        if (view instanceof BottomNavigationMenuView) {
-            BottomNavigationMenuView bottomNavigationMenuView = (BottomNavigationMenuView) view;
-            bottomNavigationMenuView.getChildAt(position).performClick();
+        if (!mIgnorePerformClick) {
+            View view = mBottomNavigationView.getChildAt(0);
+            if (view instanceof BottomNavigationMenuView) {
+                BottomNavigationMenuView bottomNavigationMenuView = (BottomNavigationMenuView) view;
+                bottomNavigationMenuView.getChildAt(position).performClick();
+            }
         }
 
         boolean showLogoEnabled = position == HOME_TAB_INDEX;
@@ -162,6 +165,8 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
         ViewUtils.setGone(mIvLogo, !showLogoEnabled);
         ViewUtils.setGone(mTvTitle, showLogoEnabled);
         ViewUtils.setGone(mBtnHomeSearch, !showLogoEnabled);
+
+        mIgnorePerformClick = false;
     }
 
     @Override
@@ -171,6 +176,7 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        mIgnorePerformClick = true;
         switch (item.getItemId()) {
             case R.id.action_tab_index:
                 mViewPager.setCurrentItem(HOME_TAB_INDEX);
