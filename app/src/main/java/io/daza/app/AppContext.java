@@ -45,6 +45,7 @@ public class AppContext extends Application {
         Stetho.initializeWithDefaults(this);
         // 初始化 YunBa
         YunBaManager.start(getApplicationContext());
+        YunBaManager.setAlias(this, Auth.alias(), null);
 
         // 初始化 GrowingIO
         GrowingIO.startWithConfiguration(this, new Configuration()

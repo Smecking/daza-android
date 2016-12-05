@@ -24,6 +24,9 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,5 +139,24 @@ public class Auth {
         editor.apply();
 
         sUserConfigs = data;
+    }
+
+    public static String alias() {
+        if (check()) {
+            try {
+                MessageDigest md = null;
+                md = MessageDigest.getInstance("MD5");
+                md.update(String.valueOf(Auth.id()).getBytes());
+                byte[] digest = md.digest();
+                StringBuffer sb = new StringBuffer();
+                for (byte b : digest) {
+                    sb.append(String.format("%02x", (0xFF & b)));
+                }
+                return sb.toString();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }

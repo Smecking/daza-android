@@ -16,12 +16,14 @@
 
 package io.daza.app.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,8 +39,12 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import io.daza.app.R;
 import io.daza.app.event.LoginStatusChangedEvent;
+import io.daza.app.event.NotificationEvent;
+import io.daza.app.model.Notification;
 import io.daza.app.ui.adapters.HomeBottomNavigationAdapter;
 import io.daza.app.ui.base.BaseActivity;
+import io.daza.app.util.Auth;
+import io.yunba.android.manager.YunBaManager;
 
 import static io.daza.app.ui.adapters.HomeBottomNavigationAdapter.HOME_TAB_INDEX;
 import static io.daza.app.ui.adapters.HomeBottomNavigationAdapter.HOME_TAB_EXPLORE;
@@ -101,9 +107,21 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        onEvent(new NotificationEvent(getIntent().getStringExtra("extra_notification")));
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        onEvent(new NotificationEvent(getIntent().getStringExtra("extra_notification")));
     }
 
     @Override
@@ -172,6 +190,26 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LoginStatusChangedEvent event) {
-        // Do something
+        YunBaManager.setAlias(this, Auth.alias(), null);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(NotificationEvent event) {
+        getIntent().removeExtra("extra_notification");
+        Notification data = event.getData();
+        if (data == null) {
+            return;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("新消息")
+                .setMessage(data.getContent())
+                .setPositiveButton("好", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+        builder.create().show();
     }
 }
