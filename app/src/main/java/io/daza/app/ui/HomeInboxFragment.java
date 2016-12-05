@@ -18,6 +18,7 @@ package io.daza.app.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,6 +39,8 @@ import io.daza.app.model.Notification;
 import io.daza.app.model.Result;
 import io.daza.app.ui.base.BaseListFragment;
 import io.daza.app.ui.vh.NotificationViewHolder;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 import static io.daza.app.api.ApiClient.API;
@@ -95,7 +98,22 @@ public class HomeInboxFragment extends
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_mark_as_read) {
-            // TODO: Do something
+            API.markAsRead().enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    if (response.isSuccessful()) {
+                        for (int i = 0; i < getItemsSource().size(); i++) {
+                            getItemsSource().get(i).setUnread(false);
+                        }
+                        getAdapter().notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+
+                }
+            });
             return true;
         }
         return super.onOptionsItemSelected(item);

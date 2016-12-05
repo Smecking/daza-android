@@ -123,7 +123,7 @@ public interface Api {
     @FormUrlEncoded
     @POST("/articles/{article_id}/comments")
     Call<Result<ArticleComment>> createArticleComment(@Path("article_id") int article_id,
-                                                            @Field("content") String content);
+                                                      @Field("content") String content);
 
     @GET("/notifications")
     Call<Result<List<Notification>>> getNotifications(@Query("page") int page,
@@ -132,7 +132,6 @@ public interface Api {
     @GET("/notifications/count")
     Call<Result<Notification>> getNotificationCount();
 
-    @FormUrlEncoded
     @POST("/notifications/mark_as_read")
     Call<Result> markAsRead();
 
