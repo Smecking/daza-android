@@ -21,7 +21,6 @@ import android.webkit.WebView;
 
 import io.daza.app.BuildConfig;
 import io.daza.app.R;
-import io.daza.app.ui.base.BaseWebViewActivity;
 
 public class AboutActivity extends InAppBrowserActivity {
 

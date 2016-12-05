@@ -18,17 +18,13 @@ package io.daza.app.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.MailTo;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -40,9 +36,10 @@ import java.util.Map;
 import io.daza.app.BuildConfig;
 import io.daza.app.R;
 import io.daza.app.ui.base.BaseActivity;
-import io.daza.app.ui.base.BaseWebViewActivity;
+import io.daza.app.util.Auth;
 
 public class InAppBrowserActivity extends BaseActivity {
+    public static final String TAG = InAppBrowserActivity.class.getSimpleName();
 
     protected WebView mWebView;
     protected ProgressBar mProgressBar;
@@ -113,8 +110,11 @@ public class InAppBrowserActivity extends BaseActivity {
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
+
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setDomStorageEnabled(true);
+//        mWebView.getSettings().setDatabaseEnabled(true);
+//        mWebView.getSettings().setDatabasePath("/data/data/" + getPackageName() + "/databases/");
     }
 
     @Override
@@ -147,6 +147,15 @@ public class InAppBrowserActivity extends BaseActivity {
     }
 
     public void onPageFinished(WebView view, String url) {
+        String script = "javascript:";
+        if (Auth.check()) {
+            script += "localStorage.setItem('auth.id', '" + Auth.id() + "');\n";
+            script += "localStorage.setItem('auth.user', '" + Auth.user().toJSONString() + "');\n";
+            script += "localStorage.setItem('auth.jwt_token', '" + Auth.jwtToken().toJSONString() + "');\n";
+        } else {
+            script += "localStorage.clear();\n";
+        }
+        mWebView.loadUrl(script);
     }
 
     public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
