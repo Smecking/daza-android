@@ -33,7 +33,6 @@ import org.blankapp.annotation.ViewById;
 import org.blankapp.util.ViewUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import io.daza.app.R;
 import io.daza.app.event.LoginStatusChangedEvent;
@@ -75,6 +74,7 @@ public class HomeMineFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -158,15 +158,9 @@ public class HomeMineFragment extends BaseFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
         EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     private void initView() {
@@ -190,7 +184,7 @@ public class HomeMineFragment extends BaseFragment {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe
     public void onEvent(LoginStatusChangedEvent event) {
         this.initView();
     }
