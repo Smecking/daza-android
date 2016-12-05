@@ -58,7 +58,8 @@
             android:label="@string/title_activity_account" />
         <activity
             android:name=".ui.ArticleCommentCreateActivity"
-            android:label="@string/title_activity_article_comment_create" />
+            android:label="@string/title_activity_article_comment_create"
+            android:windowSoftInputMode="stateVisible" />
         <activity
             android:name=".ui.ArticleCommentsActivity"
             android:label="@string/title_activity_article_comments" />

@@ -122,8 +122,8 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("/articles/{article_id}/comments")
-    Call<Result<List<Article>>> createArticleComment(@Path("article_id") int article_id,
-                                                     @Field("content") String content);
+    Call<Result<ArticleComment>> createArticleComment(@Path("article_id") int article_id,
+                                                            @Field("content") String content);
 
     @GET("/notifications")
     Call<Result<List<Notification>>> getNotifications(@Query("page") int page,
