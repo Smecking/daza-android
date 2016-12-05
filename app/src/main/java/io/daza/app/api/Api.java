@@ -44,7 +44,6 @@ public interface Api {
     Call<Result<User>> login(@Field("email") String email,
                              @Field("password") String password);
 
-    @FormUrlEncoded
     @POST("/account/logout")
     Call<Result> logout();
 
@@ -101,7 +100,6 @@ public interface Api {
     Call<Result<List<Article>>> getTopicArticles(@Path("topic_id") int topic_id,
                                                  @Query("page") int page);
 
-    @FormUrlEncoded
     @POST("/topics/{topic_id}/subscribe")
     Call<Result<Topic>> subscribeTopic(@Path("topic_id") int topic_id);
 
@@ -112,6 +110,11 @@ public interface Api {
 
     @GET("/articles/{article_id}")
     Call<Result<Article>> getArticle(@Path("article_id") int article_id);
+
+    @FormUrlEncoded
+    @POST("/articles/{article_id}/votes")
+    Call<Result> voteArticle(@Path("article_id") int article_id,
+                             @Field("type") String type);
 
     @GET("/articles/{article_id}/comments")
     Call<Result<List<ArticleComment>>> getArticleComments(@Path("article_id") int article_id,

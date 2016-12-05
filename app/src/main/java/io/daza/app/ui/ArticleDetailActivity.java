@@ -18,18 +18,30 @@ package io.daza.app.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import org.blankapp.annotation.ViewById;
+import org.blankapp.util.ViewUtils;
+
+import java.util.Locale;
 
 import io.daza.app.BuildConfig;
 import io.daza.app.R;
 import io.daza.app.model.Article;
+import io.daza.app.model.ArticleVote;
 import io.daza.app.model.Model;
+import io.daza.app.model.Result;
 import io.daza.app.util.Auth;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static io.daza.app.api.ApiClient.API;
 
 public class ArticleDetailActivity extends InAppBrowserActivity {
 
@@ -40,6 +52,8 @@ public class ArticleDetailActivity extends InAppBrowserActivity {
     private Button mBtnCreateComment;
     @ViewById(R.id.btn_comment)
     private ImageButton mBtnComment;
+    @ViewById(R.id.tv_comment_count)
+    private TextView mTvCommentCount;
     @ViewById(R.id.btn_upvote)
     private ImageButton mBtnUpvote;
     @ViewById(R.id.btn_share)
@@ -78,7 +92,25 @@ public class ArticleDetailActivity extends InAppBrowserActivity {
         mBtnUpvote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (mArticle == null) {
+                    return;
+                }
+                API.voteArticle(mArticleId, "up").enqueue(new Callback<Result>() {
+                    @Override
+                    public void onResponse(Call<Result> call, Response<Result> response) {
+                        if (response.isSuccessful()) {
+                            mArticle.setUpvoted(true);
+                            mArticle.setUpvote_count(mArticle.getUpvote_count() + 1);
+                            mBtnUpvote.setImageResource(R.mipmap.ic_upvote_checked);
+                            Snackbar.make(mWebView, "已赞", Snackbar.LENGTH_SHORT).show();
+                        }
+                    }
 
+                    @Override
+                    public void onFailure(Call<Result> call, Throwable t) {
+
+                    }
+                });
             }
         });
 
@@ -95,9 +127,21 @@ public class ArticleDetailActivity extends InAppBrowserActivity {
                 startActivity(sendIntent);
             }
         });
+
+        this.initView();
     }
 
     @Override
     public void onReceivedTitle(WebView view, String title) {
+    }
+
+    private void initView() {
+        if (mArticle != null) {
+            mTvCommentCount.setText(String.format(Locale.US, "%d", mArticle.getComment_count()));
+            ViewUtils.setGone(mTvCommentCount, mArticle.getComment_count() <= 0);
+            if (mArticle.isUpvoted()) {
+                mBtnUpvote.setImageResource(R.mipmap.ic_upvote_checked);
+            }
+        }
     }
 }

@@ -36,8 +36,8 @@ import io.daza.app.R;
 
 public class BaseWebViewActivity extends BaseActivity {
 
-    private WebView mWebView;
-    private ProgressBar mProgressBar;
+    protected WebView mWebView;
+    protected ProgressBar mProgressBar;
 
     public WebViewClient mWebViewClient = new WebViewClient() {
 

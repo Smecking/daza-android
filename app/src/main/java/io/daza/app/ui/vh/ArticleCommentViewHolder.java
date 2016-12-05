@@ -82,7 +82,7 @@ public class ArticleCommentViewHolder extends BaseViewHolder {
         this.mListener = listener;
     }
 
-    public static interface OnClickListener {
+    public interface OnClickListener {
         void onClickUser(User user);
     }
 
