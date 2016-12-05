@@ -24,8 +24,11 @@ import android.support.annotation.Nullable;
 import android.support.v14.preference.PreferenceFragment;
 import android.support.v7.preference.Preference;
 
+import org.greenrobot.eventbus.EventBus;
+
 import io.daza.app.BuildConfig;
 import io.daza.app.R;
+import io.daza.app.event.LoginStatusChangedEvent;
 import io.daza.app.model.Result;
 import io.daza.app.ui.base.BaseActivity;
 import io.daza.app.util.Auth;
@@ -79,9 +82,10 @@ public class SettingsActivity extends BaseActivity {
                     break;
                 case KEY_FEEDBACK:
                     intent = new Intent(Intent.ACTION_SEND);
-                    intent.setType("text/html");
-                    intent.putExtra(Intent.EXTRA_EMAIL, BuildConfig.EMAIL_HI);
+                    intent.putExtra(Intent.EXTRA_EMAIL, new String[] { BuildConfig.EMAIL_HI });
                     intent.putExtra(Intent.EXTRA_SUBJECT, "意见反馈");
+                    intent.setType("message/rfc822");
+                    startActivity(intent);
                     break;
                 case KEY_ABOUT:
                     intent = new Intent(getActivity(), AboutActivity.class);
@@ -111,8 +115,8 @@ public class SettingsActivity extends BaseActivity {
             Auth.jwtToken(null);
             Auth.user(null);
             Auth.userConfigs(null);
+            EventBus.getDefault().post(new LoginStatusChangedEvent());
             getActivity().finish();
-            getActivity().overridePendingTransition(0, 0);
         }
     }
 
