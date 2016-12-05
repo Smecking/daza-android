@@ -24,12 +24,14 @@ import android.widget.EditText;
 import org.blankapp.annotation.ViewById;
 import org.blankapp.validation.Rule;
 import org.blankapp.validation.Validator;
+import org.blankapp.validation.handlers.DefaultErrorHandler;
 
 import io.daza.app.R;
 import io.daza.app.model.ArticleComment;
 import io.daza.app.model.Result;
 import io.daza.app.model.User;
 import io.daza.app.ui.base.BaseActivity;
+import io.daza.app.util.Auth;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -57,6 +59,16 @@ public class ModifyProfileActivity extends BaseActivity {
         mValidator.add(Rule.with(mEdtName).required());
         mValidator.add(Rule.with(mEdtCity).required());
         mValidator.add(Rule.with(mEdtBio).required());
+
+        mValidator.setErrorHandler(new DefaultErrorHandler());
+
+        if (Auth.check()) {
+            User user = Auth.user();
+            mEdtName.setText(user.getName());
+            mEdtCity.setText(user.getCity());
+            mEdtWebsite.setText(user.getWebsite());
+            mEdtBio.setText(user.getBio());
+        }
     }
 
 
@@ -68,7 +80,7 @@ public class ModifyProfileActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_send) {
+        if (item.getItemId() == R.id.action_save) {
             if (!mValidator.validate()) {
                 return false;
             }

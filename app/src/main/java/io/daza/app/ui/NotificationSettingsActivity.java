@@ -27,9 +27,15 @@ import android.view.MenuItem;
 import java.util.List;
 
 import io.daza.app.R;
+import io.daza.app.model.Result;
 import io.daza.app.model.UserConfig;
 import io.daza.app.ui.base.BaseActivity;
 import io.daza.app.util.Auth;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static io.daza.app.api.ApiClient.API;
 
 public class NotificationSettingsActivity extends BaseActivity {
 
@@ -41,7 +47,6 @@ public class NotificationSettingsActivity extends BaseActivity {
 
     public static class NotificationSettingsFragment extends PreferenceFragment {
 
-        private static final String KEY_PUSH_NOTIFICATION_STATUS = "key_push_notification_status";
         private static final String KEY_NOTIFICATION_FOLLOWED   = "key_notification_followed";
         private static final String KEY_NOTIFICATION_SUBSCRIBED = "key_notification_subscribed";
         private static final String KEY_NOTIFICATION_UPVOTED    = "key_notification_upvoted";
@@ -73,18 +78,31 @@ public class NotificationSettingsActivity extends BaseActivity {
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             if (item.getItemId() == R.id.action_save) {
-                // TODO: Do something
+                boolean notificationFollowed = ((SwitchPreference) findPreference(KEY_NOTIFICATION_FOLLOWED)).isChecked();
+                boolean notificationSubscribed = ((SwitchPreference) findPreference(KEY_NOTIFICATION_SUBSCRIBED)).isChecked();
+                boolean notificationUpvoted = ((SwitchPreference) findPreference(KEY_NOTIFICATION_UPVOTED)).isChecked();
+                boolean notificationComment = ((SwitchPreference) findPreference(KEY_NOTIFICATION_COMMENT)).isChecked();
+                boolean notificationMention = ((SwitchPreference) findPreference(KEY_NOTIFICATION_MENTION)).isChecked();
+                API.updateConfigs(notificationFollowed,
+                        notificationSubscribed,
+                        notificationUpvoted,
+                        notificationComment,
+                        notificationMention).enqueue(new Callback<Result<List<UserConfig>>>() {
+                    @Override
+                    public void onResponse(Call<Result<List<UserConfig>>> call, Response<Result<List<UserConfig>>> response) {
+                        if (response.isSuccessful()) {
+                            getActivity().finish();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Result<List<UserConfig>>> call, Throwable t) {
+
+                    }
+                });
                 return true;
             }
             return super.onOptionsItemSelected(item);
-        }
-
-        @Override
-        public boolean onPreferenceTreeClick(Preference preference) {
-            if (KEY_PUSH_NOTIFICATION_STATUS.equals(preference.getKey())) {
-                // TODO: Do something
-            }
-            return true;
         }
 
         private boolean isCheckedByKey(String key) {

@@ -24,6 +24,7 @@ import android.widget.EditText;
 import org.blankapp.annotation.ViewById;
 import org.blankapp.validation.Rule;
 import org.blankapp.validation.Validator;
+import org.blankapp.validation.handlers.DefaultErrorHandler;
 
 import io.daza.app.R;
 import io.daza.app.model.ArticleComment;
@@ -54,6 +55,9 @@ public class ModifyPasswordActivity extends BaseActivity {
 
         mValidator.add(Rule.with(mEdtOldPassword).required());
         mValidator.add(Rule.with(mEdtNewPassword).required());
+        mValidator.add(Rule.with(mEdtNewPasswordConfirmation).required());
+
+        mValidator.setErrorHandler(new DefaultErrorHandler());
     }
 
     @Override
@@ -64,7 +68,7 @@ public class ModifyPasswordActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_send) {
+        if (item.getItemId() == R.id.action_save) {
             if (!mValidator.validate()) {
                 return false;
             }

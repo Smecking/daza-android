@@ -2,11 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Preference
-        android:title="接收推送通知"
-        app:key="key_push_notification_status"
-        app:summary="未开启" />
-
     <PreferenceCategory android:title="消息设置">
         <SwitchPreference
             android:title="有人关注了我"
