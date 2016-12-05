@@ -50,7 +50,6 @@ public class LoginActivity extends BaseActivity {
     @ViewById(R.id.btn_submit)
     private Button mBtnSubmit;
 
-
     private Validator mValidator = new Validator();
 
     @Override
@@ -91,6 +90,7 @@ public class LoginActivity extends BaseActivity {
                             Auth.user(user);
                             Auth.userConfigs(user.getConfigs());
                             EventBus.getDefault().post(new LoginStatusChangedEvent());
+                            LoginActivity.this.finish();
                         }
                     }
                 }

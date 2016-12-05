@@ -115,7 +115,8 @@
             android:label="@string/title_activity_user_detail" />
         <activity
             android:name=".ui.LoginActivity"
-            android:label="@string/title_activity_login" />
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="stateVisible" />
 
         <service android:name="io.yunba.android.core.YunBaService" />
 
