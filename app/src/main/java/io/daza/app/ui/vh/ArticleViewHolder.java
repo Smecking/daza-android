@@ -37,6 +37,7 @@ public class ArticleViewHolder extends BaseViewHolder {
     private ImageView mIvImage;
     private TextView mTvTitle;
     private TextView mTvTopicName;
+    private TextView mTvTopicNameRightDot;
     private TextView mTvPublishedAt;
     private TextView mTvCommentCount;
     private TextView mTvViewCount;
@@ -46,6 +47,7 @@ public class ArticleViewHolder extends BaseViewHolder {
         mIvImage = (ImageView) itemView.findViewById(R.id.iv_image);
         mTvTitle = (TextView) itemView.findViewById(R.id.tv_title);
         mTvTopicName = (TextView) itemView.findViewById(R.id.tv_topic_name);
+        mTvTopicNameRightDot = (TextView) itemView.findViewById(R.id.tv_topic_name_right_dot);
         mTvPublishedAt = (TextView) itemView.findViewById(R.id.tv_published_at);
         mTvCommentCount = (TextView) itemView.findViewById(R.id.tv_comment_count);
         mTvViewCount = (TextView) itemView.findViewById(R.id.tv_view_count);
@@ -66,6 +68,8 @@ public class ArticleViewHolder extends BaseViewHolder {
         } else {
             mTvTopicName.setText("");
         }
+        ViewUtils.setGone(mTvTopicName, data.getTopic() == null);
+        ViewUtils.setGone(mTvTopicNameRightDot, data.getTopic() == null);
 
         mTvPublishedAt.setText(DateUtils.toTimeAgo(itemView.getContext(), data.getPublished_at()));
         mTvCommentCount.setText(String.format(Locale.US, "%d评论", data.getComment_count()));
