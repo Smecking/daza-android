@@ -32,6 +32,7 @@ public class Topic extends Model {
     private String source_link;     // 文章来源链接
     private int article_count;      // 文章数
     private int subscriber_count;   // 订阅数
+    private boolean subscribed;
 
     public String getShort_id() {
         return short_id;
@@ -143,5 +144,13 @@ public class Topic extends Model {
 
     public void setSubscriber_count(int subscriber_count) {
         this.subscriber_count = subscriber_count;
+    }
+
+    public boolean isSubscribed() {
+        return subscribed;
+    }
+
+    public void setSubscribed(boolean subscribed) {
+        this.subscribed = subscribed;
     }
 }

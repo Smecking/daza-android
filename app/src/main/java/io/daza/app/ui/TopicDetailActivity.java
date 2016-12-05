@@ -34,15 +34,18 @@ import io.daza.app.model.Article;
 import io.daza.app.model.Model;
 import io.daza.app.model.Result;
 import io.daza.app.model.Topic;
+import io.daza.app.model.User;
 import io.daza.app.ui.base.BaseListActivity;
 import io.daza.app.ui.vh.ArticleViewHolder;
 import io.daza.app.ui.vh.BaseViewHolder;
 import io.daza.app.ui.vh.TopicDetailHeadViewHolder;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 import static io.daza.app.api.ApiClient.API;
 
-public class TopicDetailActivity extends BaseListActivity<BaseViewHolder, Article, Result<List<Article>>> {
+public class TopicDetailActivity extends BaseListActivity<BaseViewHolder, Article, Result<List<Article>>> implements TopicDetailHeadViewHolder.OnClickListener {
 
     private final int VIEWTYPE_HEAD = 0;
     private final int VIEWTYPE_ITEM = 1;
@@ -102,6 +105,7 @@ public class TopicDetailActivity extends BaseListActivity<BaseViewHolder, Articl
         if (getItemViewType(position) == VIEWTYPE_HEAD) {
             TopicDetailHeadViewHolder viewHolder = (TopicDetailHeadViewHolder) holder;
             viewHolder.bind(mTopic);
+            viewHolder.setListener(this);
         } else {
             ArticleViewHolder viewHolder = (ArticleViewHolder) holder;
             Article data = getItemsSource().get(position);
@@ -146,5 +150,35 @@ public class TopicDetailActivity extends BaseListActivity<BaseViewHolder, Articl
         intent.putExtra("extra_article_id", data.getId());
         intent.putExtra("extra_article", data.toJSONString());
         startActivity(intent);
+    }
+
+    @Override
+    public void onClickUser(User user) {
+        Intent intent = new Intent(this, UserDetailActivity.class);
+        intent.putExtra("extra_user_id", user.getId());
+        intent.putExtra("extra_user", user.toJSONString());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClickSubscribe(final Topic topic) {
+        if (topic.isSubscribed()) {
+            return;
+        }
+        API.subscribeTopic(topic.getId()).enqueue(new Callback<Result<Topic>>() {
+            @Override
+            public void onResponse(Call<Result<Topic>> call, Response<Result<Topic>> response) {
+                if (response.isSuccessful()) {
+                    topic.setSubscriber_count(topic.getSubscriber_count() + 1);
+                    topic.setSubscribed(true);
+                    getAdapter().notifyItemChanged(0);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result<Topic>> call, Throwable t) {
+
+            }
+        });
     }
 }

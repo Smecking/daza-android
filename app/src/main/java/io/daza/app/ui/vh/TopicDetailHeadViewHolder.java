@@ -30,6 +30,7 @@ import java.util.Locale;
 
 import io.daza.app.R;
 import io.daza.app.model.Topic;
+import io.daza.app.model.User;
 import io.daza.app.util.Thumbnail;
 
 public class TopicDetailHeadViewHolder extends BaseViewHolder {
@@ -42,6 +43,9 @@ public class TopicDetailHeadViewHolder extends BaseViewHolder {
     @ViewById(R.id.tv_creater)
     private TextView mTvCreater;
 
+
+    private OnClickListener mListener;
+
     public TopicDetailHeadViewHolder(View itemView) {
         super(itemView);
         mIvImage = (ImageView) itemView.findViewById(R.id.iv_image);
@@ -49,7 +53,7 @@ public class TopicDetailHeadViewHolder extends BaseViewHolder {
         mTvDescription = (TextView) itemView.findViewById(R.id.tv_description);
     }
 
-    public void bind(Topic data) {
+    public void bind(final Topic data) {
         Glide
                 .with(itemView.getContext())
                 .load(new Thumbnail(data.getImage_url()).small())
@@ -59,9 +63,36 @@ public class TopicDetailHeadViewHolder extends BaseViewHolder {
                 .into(mIvImage);
         mTvName.setText(data.getName());
         mTvDescription.setText(data.getDescription());
-        mBtnSubscribe.setText(String.format(Locale.US, "订阅 (%d)", data.getSubscriber_count()));
+        mBtnSubscribe.setText(String.format(Locale.US, (data.isSubscribed() ? "已" : "") + "订阅 (%d)", data.getSubscriber_count()));
         if (data.getUser() != null) {
             mTvCreater.setText(String.format(Locale.US, "由 %s 维护", data.getUser().getName()));
+            mTvCreater.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mListener != null) {
+                        mListener.onClickUser(data.getUser());
+                    }
+                }
+            });
+        } else {
+            mTvCreater.setText("");
         }
+        mBtnSubscribe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null) {
+                    mListener.onClickSubscribe(data);
+                }
+            }
+        });
+    }
+
+    public void setListener(OnClickListener listener) {
+        this.mListener = listener;
+    }
+
+    public interface OnClickListener {
+        void onClickUser(User user);
+        void onClickSubscribe(Topic topic);
     }
 }
