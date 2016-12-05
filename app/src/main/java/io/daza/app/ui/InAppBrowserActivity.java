@@ -49,13 +49,18 @@ public class InAppBrowserActivity extends BaseActivity {
     public WebViewClient mWebViewClient = new WebViewClient() {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (url.contains("http://") || url.contains("https://")) {
+            if (url.startsWith("http://") || url.startsWith("https://")) {
                 if (!url.contains(BuildConfig.DOMAIN_NAME)) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(url));
                     startActivity(intent);
                     return true;
                 }
+            } else if (url.startsWith("daza://")) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+                return true;
             }
             return super.shouldOverrideUrlLoading(view, url);
         }

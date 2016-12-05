@@ -65,7 +65,19 @@
             android:label="@string/title_activity_article_comments" />
         <activity
             android:name=".ui.ArticleDetailActivity"
-            android:label="@string/title_activity_article_detail" />
+            android:label="@string/title_activity_article_detail">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="articles"
+                    android:scheme="daza" />
+
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.ArticleLikesActivity"
             android:label="@string/title_activity_article_likes" />
@@ -109,10 +121,34 @@
             android:label="@string/title_activity_tag_detail" />
         <activity
             android:name=".ui.TopicDetailActivity"
-            android:label="@string/title_activity_topic_detail" />
+            android:label="@string/title_activity_topic_detail">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="topics"
+                    android:scheme="daza" />
+
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.UserDetailActivity"
-            android:label="@string/title_activity_user_detail" />
+            android:label="@string/title_activity_user_detail">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="users"
+                    android:scheme="daza" />
+
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.LoginActivity"
             android:label="@string/title_activity_login"

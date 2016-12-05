@@ -17,8 +17,10 @@
 package io.daza.app.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,9 +48,10 @@ import retrofit2.Response;
 import static io.daza.app.api.ApiClient.API;
 
 public class TopicDetailActivity extends BaseListActivity<BaseViewHolder, Article, Result<List<Article>>> implements TopicDetailHeadViewHolder.OnClickListener {
+    private final String TAG = TopicDetailActivity.class.getSimpleName();
 
-    private final int VIEWTYPE_HEAD = 0;
-    private final int VIEWTYPE_ITEM = 1;
+    private final int VIEW_TYPE_HEAD = 0;
+    private final int VIEW_TYPE_ITEM = 1;
 
     private int mTopicId;
     private Topic mTopic;
@@ -61,11 +64,33 @@ public class TopicDetailActivity extends BaseListActivity<BaseViewHolder, Articl
         mTopicId = getIntent().getIntExtra("extra_topic_id", 0);
         mTopic = Model.parseObject(getIntent().getStringExtra("extra_topic"), Topic.class);
 
+        if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
+            Uri data = getIntent().getData();
+            mTopicId = Integer.parseInt(data.getPathSegments().get(0));
+        }
+
         getItemsSource().add(new Article());
         getAdapter().notifyDataSetChanged();
 
         this.initLoader();
         this.getPullToRefreshLayout().setRefreshing(true);
+
+        if (mTopic == null) {
+            API.getTopic(mTopicId).enqueue(new Callback<Result<Topic>>() {
+                @Override
+                public void onResponse(Call<Result<Topic>> call, Response<Result<Topic>> response) {
+                    if (response.isSuccessful()) {
+                        mTopic = response.body().getData();
+                        getAdapter().notifyItemChanged(0);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Result<Topic>> call, Throwable t) {
+
+                }
+            });
+        }
     }
 
     @Override
@@ -91,7 +116,7 @@ public class TopicDetailActivity extends BaseListActivity<BaseViewHolder, Articl
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == VIEWTYPE_HEAD) {
+        if (viewType == VIEW_TYPE_HEAD) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_topic_detail_list_head, parent, false);
             return new TopicDetailHeadViewHolder(itemView);
         }
@@ -102,7 +127,7 @@ public class TopicDetailActivity extends BaseListActivity<BaseViewHolder, Articl
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        if (getItemViewType(position) == VIEWTYPE_HEAD) {
+        if (getItemViewType(position) == VIEW_TYPE_HEAD) {
             TopicDetailHeadViewHolder viewHolder = (TopicDetailHeadViewHolder) holder;
             viewHolder.bind(mTopic);
             viewHolder.setListener(this);
@@ -116,9 +141,9 @@ public class TopicDetailActivity extends BaseListActivity<BaseViewHolder, Articl
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
-            return VIEWTYPE_HEAD;
+            return VIEW_TYPE_HEAD;
         }
-        return VIEWTYPE_ITEM;
+        return VIEW_TYPE_ITEM;
     }
 
     @Override
@@ -142,7 +167,7 @@ public class TopicDetailActivity extends BaseListActivity<BaseViewHolder, Articl
 
     @Override
     protected void onListItemClick(RecyclerView rv, View v, int position, long id) {
-        if (getItemViewType(position) == VIEWTYPE_HEAD) {
+        if (getItemViewType(position) == VIEW_TYPE_HEAD) {
             return;
         }
         Article data = getItemsSource().get(position);

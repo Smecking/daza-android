@@ -54,6 +54,13 @@ public class TopicDetailHeadViewHolder extends BaseViewHolder {
     }
 
     public void bind(final Topic data) {
+        if (data == null) {
+            mIvImage.setImageResource(R.mipmap.placeholder_image);
+            mTvName.setText("");
+            mTvCreater.setText("");
+            mTvDescription.setText("");
+            return;
+        }
         Glide
                 .with(itemView.getContext())
                 .load(new Thumbnail(data.getImage_url()).small())

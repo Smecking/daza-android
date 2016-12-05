@@ -17,6 +17,7 @@
 package io.daza.app.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -33,10 +34,8 @@ import java.util.Locale;
 import io.daza.app.BuildConfig;
 import io.daza.app.R;
 import io.daza.app.model.Article;
-import io.daza.app.model.ArticleVote;
 import io.daza.app.model.Model;
 import io.daza.app.model.Result;
-import io.daza.app.util.Auth;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,6 +43,7 @@ import retrofit2.Response;
 import static io.daza.app.api.ApiClient.API;
 
 public class ArticleDetailActivity extends InAppBrowserActivity {
+    private final String TAG = ArticleDetailActivity.class.getSimpleName();
 
     private int mArticleId;
     private Article mArticle;
@@ -67,14 +67,32 @@ public class ArticleDetailActivity extends InAppBrowserActivity {
         mArticleId = getIntent().getIntExtra("extra_article_id", 0);
         mArticle = Model.parseObject(getIntent().getStringExtra("extra_article"), Article.class);
 
-        loadUrl(BuildConfig.WEB_BASE_URL + "/in-app/articles/" + mArticle.getId());
+        if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
+            Uri data = getIntent().getData();
+            mArticleId = Integer.parseInt(data.getPathSegments().get(0));
+
+            // 如果DeepLink 为 daza://articles/{id}/comments，即跳转到评论列表
+            if (data.getPathSegments().size() >= 2 &&
+                data.getPathSegments().get(1).equals("comments")) {
+
+                Intent intent = new Intent(ArticleDetailActivity.this, ArticleCommentsActivity.class);
+                intent.putExtra("extra_article_id", mArticleId);
+                startActivity(intent);
+                this.finish();
+                return;
+            }
+        }
+
+        loadUrl(BuildConfig.WEB_BASE_URL + "/in-app/articles/" + mArticleId);
 
         mBtnCreateComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ArticleDetailActivity.this, ArticleCommentCreateActivity.class);
                 intent.putExtra("extra_article_id", mArticleId);
-                intent.putExtra("extra_article", mArticle.toJSONString());
+                if (mArticle != null) {
+                    intent.putExtra("extra_article", mArticle.toJSONString());
+                }
                 startActivity(intent);
             }
         });
@@ -84,7 +102,9 @@ public class ArticleDetailActivity extends InAppBrowserActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ArticleDetailActivity.this, ArticleCommentsActivity.class);
                 intent.putExtra("extra_article_id", mArticleId);
-                intent.putExtra("extra_article", mArticle.toJSONString());
+                if (mArticle != null) {
+                    intent.putExtra("extra_article", mArticle.toJSONString());
+                }
                 startActivity(intent);
             }
         });
@@ -129,6 +149,23 @@ public class ArticleDetailActivity extends InAppBrowserActivity {
         });
 
         this.initView();
+
+        if (mArticle == null) {
+            API.getArticle(mArticleId).enqueue(new Callback<Result<Article>>() {
+                @Override
+                public void onResponse(Call<Result<Article>> call, Response<Result<Article>> response) {
+                    if (response.isSuccessful()) {
+                        mArticle = response.body().getData();
+                        initView();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Result<Article>> call, Throwable t) {
+
+                }
+            });
+        }
     }
 
     @Override

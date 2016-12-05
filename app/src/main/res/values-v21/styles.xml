@@ -5,6 +5,6 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:colorButtonNormal">@color/colorPrimary</item>
+        <item name="android:colorButtonNormal">@color/colorAccent</item>
     </style>
 </resources>

@@ -17,6 +17,7 @@
 package io.daza.app.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -31,10 +32,16 @@ import org.blankapp.util.ViewUtils;
 
 import io.daza.app.R;
 import io.daza.app.model.Model;
+import io.daza.app.model.Result;
 import io.daza.app.model.User;
 import io.daza.app.ui.base.BaseActivity;
 import io.daza.app.util.Auth;
 import io.daza.app.util.Thumbnail;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static io.daza.app.api.ApiClient.API;
 
 public class UserDetailActivity extends BaseActivity {
 
@@ -63,6 +70,11 @@ public class UserDetailActivity extends BaseActivity {
 
         mUserId = getIntent().getIntExtra("extra_user_id", 0);
         mUser = Model.parseObject(getIntent().getStringExtra("extra_user"), User.class);
+
+        if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
+            Uri data = getIntent().getData();
+            mUserId = Integer.parseInt(data.getPathSegments().get(0));
+        }
 
         mBtnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,26 +134,39 @@ public class UserDetailActivity extends BaseActivity {
         }
 
         initView();
+
+        if (mUser == null) {
+            API.getUser(mUserId).enqueue(new Callback<Result<User>>() {
+                @Override
+                public void onResponse(Call<Result<User>> call, Response<Result<User>> response) {
+                    if (response.isSuccessful()) {
+                        mUser = response.body().getData();
+                        initView();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Result<User>> call, Throwable t) {
+
+                }
+            });
+        }
     }
 
     private void initView() {
-        if (Auth.check()) {
-            Glide
-                    .with(this)
-                    .load(new Thumbnail(mUser.getAvatar_url()).small())
-                    .centerCrop()
-                    .placeholder(R.mipmap.placeholder_image)
-                    .crossFade()
-                    .into(mIvAvatar);
-            mTvName.setText(mUser.getName());
-            mTvBio.setText(mUser.getBio());
-            ViewUtils.setGone(mTvBio, false);
-        } else {
-            mIvAvatar.setImageResource(R.mipmap.placeholder_image);
-            mTvName.setText("未登录");
-            mTvBio.setText("");
-            ViewUtils.setGone(mTvBio, true);
+        if (mUser == null) {
+            return;
         }
+        Glide
+                .with(this)
+                .load(new Thumbnail(mUser.getAvatar_url()).small())
+                .centerCrop()
+                .placeholder(R.mipmap.placeholder_image)
+                .crossFade()
+                .into(mIvAvatar);
+        mTvName.setText(mUser.getName());
+        mTvBio.setText(mUser.getBio());
+        ViewUtils.setGone(mTvBio, false);
     }
 
 }
