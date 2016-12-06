@@ -29,16 +29,24 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <org.blankapp.widget.PullToRefreshLayout
-        android:id="@id/pull_to_refresh"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@id/list"
+        <org.blankapp.widget.PullToRefreshLayout
+            android:id="@id/pull_to_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/activity_search_list_item" />
-    </org.blankapp.widget.PullToRefreshLayout>
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@id/list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/activity_search_list_item" />
+        </org.blankapp.widget.PullToRefreshLayout>
+
+        <include layout="@layout/empty_indicator" />
+
+    </RelativeLayout>
 
 </LinearLayout>

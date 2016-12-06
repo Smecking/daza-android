@@ -17,4 +17,6 @@
             tools:listitem="@layout/activity_topic_detail_list_item" />
     </org.blankapp.widget.PullToRefreshLayout>
 
+    <include layout="@layout/empty_indicator" />
+
 </RelativeLayout>

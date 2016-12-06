@@ -15,4 +15,7 @@
             android:layout_height="match_parent"
             tools:listitem="@layout/fragment_articles_list_item" />
     </org.blankapp.widget.PullToRefreshLayout>
+
+    <include layout="@layout/empty_indicator" />
+
 </FrameLayout>
