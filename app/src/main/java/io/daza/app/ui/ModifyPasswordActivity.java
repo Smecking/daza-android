@@ -27,6 +27,7 @@ import org.blankapp.validation.Validator;
 import org.blankapp.validation.handlers.DefaultErrorHandler;
 
 import io.daza.app.R;
+import io.daza.app.handler.ErrorHandler;
 import io.daza.app.model.ArticleComment;
 import io.daza.app.model.Result;
 import io.daza.app.ui.base.BaseActivity;
@@ -77,6 +78,9 @@ public class ModifyPasswordActivity extends BaseActivity {
             API.modifyPassword(oldPassword, newPassword).enqueue(new Callback<Result>() {
                 @Override
                 public void onResponse(Call<Result> call, Response<Result> response) {
+                    if (new ErrorHandler(ModifyPasswordActivity.this).handleErrorIfNeed(response.body())) {
+                        return;
+                    }
                     if (response.isSuccessful()) {
                         finish();
                     }
@@ -84,7 +88,7 @@ public class ModifyPasswordActivity extends BaseActivity {
 
                 @Override
                 public void onFailure(Call<Result> call, Throwable t) {
-
+                    new ErrorHandler(ModifyPasswordActivity.this).handleError(t);
                 }
             });
             return true;

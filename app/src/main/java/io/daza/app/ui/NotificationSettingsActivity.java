@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import java.util.List;
 
 import io.daza.app.R;
+import io.daza.app.handler.ErrorHandler;
 import io.daza.app.model.Result;
 import io.daza.app.model.UserConfig;
 import io.daza.app.ui.base.BaseActivity;
@@ -90,6 +91,9 @@ public class NotificationSettingsActivity extends BaseActivity {
                         notificationMention).enqueue(new Callback<Result<List<UserConfig>>>() {
                     @Override
                     public void onResponse(Call<Result<List<UserConfig>>> call, Response<Result<List<UserConfig>>> response) {
+                        if (new ErrorHandler(getActivity()).handleErrorIfNeed(response.body())) {
+                            return;
+                        }
                         if (response.isSuccessful()) {
                             getActivity().finish();
                         }
@@ -97,7 +101,7 @@ public class NotificationSettingsActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(Call<Result<List<UserConfig>>> call, Throwable t) {
-
+                        new ErrorHandler(getActivity()).handleError(t);
                     }
                 });
                 return true;

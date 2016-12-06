@@ -18,8 +18,8 @@ package io.daza.app.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,14 +31,18 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.daza.app.R;
 import io.daza.app.event.LoginStatusChangedEvent;
+import io.daza.app.handler.ErrorHandler;
 import io.daza.app.model.Notification;
+import io.daza.app.model.Pagination;
 import io.daza.app.model.Result;
 import io.daza.app.ui.base.BaseListFragment;
 import io.daza.app.ui.vh.NotificationViewHolder;
+import io.daza.app.util.Auth;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,7 +50,8 @@ import retrofit2.Response;
 import static io.daza.app.api.ApiClient.API;
 
 public class HomeInboxFragment extends
-        BaseListFragment<NotificationViewHolder, Notification, Response<Result<List<Notification>>>> {
+        BaseListFragment<NotificationViewHolder, Notification, Result<List<Notification>>> {
+    private final String TAG = HomeInboxFragment.class.getSimpleName();
 
     public HomeInboxFragment() {
         // Required empty public constructor
@@ -63,6 +68,7 @@ public class HomeInboxFragment extends
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -79,15 +85,9 @@ public class HomeInboxFragment extends
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
         EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     @Override
@@ -98,9 +98,15 @@ public class HomeInboxFragment extends
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_mark_as_read) {
+            if (!Auth.check()) {
+                return false;
+            }
             API.markAsRead().enqueue(new Callback<Result>() {
                 @Override
                 public void onResponse(Call<Result> call, Response<Result> response) {
+                    if (new ErrorHandler(getActivity()).handleErrorIfNeed(response.body())) {
+                        return;
+                    }
                     if (response.isSuccessful()) {
                         for (int i = 0; i < getItemsSource().size(); i++) {
                             getItemsSource().get(i).setUnread(false);
@@ -111,7 +117,7 @@ public class HomeInboxFragment extends
 
                 @Override
                 public void onFailure(Call<Result> call, Throwable t) {
-
+                    new ErrorHandler(getActivity()).handleError(t);
                 }
             });
             return true;
@@ -133,19 +139,25 @@ public class HomeInboxFragment extends
     }
 
     @Override
-    public Response<Result<List<Notification>>> onLoadInBackground() throws Exception {
-        return API.getNotifications(getNextPage(), null).execute();
+    public Result<List<Notification>> onLoadInBackground() throws Exception {
+        if (!Auth.check()) {
+            Result<List<Notification>> result = new Result<>();
+            result.setCode(0);
+            result.setPagination(new Pagination());
+            result.setData(new ArrayList<Notification>());
+            return result;
+        }
+        return API.getNotifications(getNextPage(), null).execute().body();
     }
 
     @Override
-    public void onLoadComplete(Response<Result<List<Notification>>> response) {
-        Result<List<Notification>> result = response.body();
-        if (response.isSuccessful() && result.isSuccessful()) {
-            setPagination(result.getPagination());
-            if (result.getPagination().getCurrent_page() == 1) {
+    public void onLoadComplete(Result<List<Notification>> data) {
+        if (data != null && data.isSuccessful()) {
+            setPagination(data.getPagination());
+            if (data.getPagination().getCurrent_page() == 1) {
                 getItemsSource().clear();
             }
-            getItemsSource().addAll(result.getData());
+            getItemsSource().addAll(data.getData());
         }
         super.onRefreshComplete();
     }
@@ -190,6 +202,12 @@ public class HomeInboxFragment extends
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LoginStatusChangedEvent event) {
-        // Do something
+        Log.d(TAG, "onLoginStatusChangedEvent");
+        if (!Auth.check()) {
+            getItemsSource().clear();
+            super.onRefreshComplete();
+        } else {
+            firstRefresh();
+        }
     }
 }

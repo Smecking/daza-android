@@ -32,6 +32,7 @@ import java.util.List;
 
 import io.daza.app.BuildConfig;
 import io.daza.app.R;
+import io.daza.app.handler.ErrorHandler;
 import io.daza.app.model.Article;
 import io.daza.app.model.Model;
 import io.daza.app.model.Result;
@@ -193,6 +194,9 @@ public class TopicDetailActivity extends BaseListActivity<BaseViewHolder, Articl
         API.subscribeTopic(topic.getId()).enqueue(new Callback<Result<Topic>>() {
             @Override
             public void onResponse(Call<Result<Topic>> call, Response<Result<Topic>> response) {
+                if (new ErrorHandler(TopicDetailActivity.this).handleErrorIfNeed(response.body())) {
+                    return;
+                }
                 if (response.isSuccessful()) {
                     topic.setSubscriber_count(topic.getSubscriber_count() + 1);
                     topic.setSubscribed(true);
@@ -202,7 +206,7 @@ public class TopicDetailActivity extends BaseListActivity<BaseViewHolder, Articl
 
             @Override
             public void onFailure(Call<Result<Topic>> call, Throwable t) {
-
+                new ErrorHandler(TopicDetailActivity.this).handleError(t);
             }
         });
     }

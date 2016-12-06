@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="暂时没有更多内容了"
+        android:text="暂无更多数据"
         android:textColor="#8f8f8f"
         android:textSize="16sp"
         android:visibility="gone" />

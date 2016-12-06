@@ -33,6 +33,7 @@ import java.util.Locale;
 
 import io.daza.app.BuildConfig;
 import io.daza.app.R;
+import io.daza.app.handler.ErrorHandler;
 import io.daza.app.model.Article;
 import io.daza.app.model.Model;
 import io.daza.app.model.Result;
@@ -118,6 +119,9 @@ public class ArticleDetailActivity extends InAppBrowserActivity {
                 API.voteArticle(mArticleId, "up").enqueue(new Callback<Result>() {
                     @Override
                     public void onResponse(Call<Result> call, Response<Result> response) {
+                        if (new ErrorHandler(ArticleDetailActivity.this).handleErrorIfNeed(response.body())) {
+                            return;
+                        }
                         if (response.isSuccessful()) {
                             mArticle.setUpvoted(true);
                             mArticle.setUpvote_count(mArticle.getUpvote_count() + 1);
@@ -128,7 +132,7 @@ public class ArticleDetailActivity extends InAppBrowserActivity {
 
                     @Override
                     public void onFailure(Call<Result> call, Throwable t) {
-
+                        new ErrorHandler(ArticleDetailActivity.this).handleError(t);
                     }
                 });
             }

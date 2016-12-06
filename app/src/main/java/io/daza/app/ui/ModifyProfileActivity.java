@@ -27,6 +27,7 @@ import org.blankapp.validation.Validator;
 import org.blankapp.validation.handlers.DefaultErrorHandler;
 
 import io.daza.app.R;
+import io.daza.app.handler.ErrorHandler;
 import io.daza.app.model.ArticleComment;
 import io.daza.app.model.Result;
 import io.daza.app.model.User;
@@ -91,6 +92,9 @@ public class ModifyProfileActivity extends BaseActivity {
             API.updateProfile(name, city, website, bio).enqueue(new Callback<Result<User>>() {
                 @Override
                 public void onResponse(Call<Result<User>> call, Response<Result<User>> response) {
+                    if (new ErrorHandler(ModifyProfileActivity.this).handleErrorIfNeed(response.body())) {
+                        return;
+                    }
                     if (response.isSuccessful()) {
                         finish();
                     }
@@ -98,7 +102,7 @@ public class ModifyProfileActivity extends BaseActivity {
 
                 @Override
                 public void onFailure(Call<Result<User>> call, Throwable t) {
-
+                    new ErrorHandler(ModifyProfileActivity.this).handleError(t);
                 }
             });
             return true;

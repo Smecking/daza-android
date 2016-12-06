@@ -29,6 +29,7 @@ import org.blankapp.validation.handlers.DefaultErrorHandler;
 import java.util.List;
 
 import io.daza.app.R;
+import io.daza.app.handler.ErrorHandler;
 import io.daza.app.model.Article;
 import io.daza.app.model.ArticleComment;
 import io.daza.app.model.Model;
@@ -79,6 +80,9 @@ public class ArticleCommentCreateActivity extends BaseActivity {
             API.createArticleComment(mArticleId, content).enqueue(new Callback<Result<ArticleComment>>() {
                 @Override
                 public void onResponse(Call<Result<ArticleComment>> call, Response<Result<ArticleComment>> response) {
+                    if (new ErrorHandler(ArticleCommentCreateActivity.this).handleErrorIfNeed(response.body())) {
+                        return;
+                    }
                     if (response.isSuccessful()) {
                         finish();
                     }
@@ -86,7 +90,7 @@ public class ArticleCommentCreateActivity extends BaseActivity {
 
                 @Override
                 public void onFailure(Call<Result<ArticleComment>> call, Throwable t) {
-
+                    new ErrorHandler(ArticleCommentCreateActivity.this).handleError(t);
                 }
             });
             return true;

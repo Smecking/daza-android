@@ -31,6 +31,7 @@ import org.blankapp.annotation.ViewById;
 import org.blankapp.util.ViewUtils;
 
 import io.daza.app.R;
+import io.daza.app.handler.ErrorHandler;
 import io.daza.app.model.Model;
 import io.daza.app.model.Result;
 import io.daza.app.model.User;
@@ -147,7 +148,7 @@ public class UserDetailActivity extends BaseActivity {
 
                 @Override
                 public void onFailure(Call<Result<User>> call, Throwable t) {
-
+                    new ErrorHandler(UserDetailActivity.this).handleError(t);
                 }
             });
         }

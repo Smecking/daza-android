@@ -102,6 +102,12 @@ public class SearchActivity extends BaseListActivity<SearchResultViewHolder, Art
     }
 
     @Override
+    public void onLoadStart() {
+        super.onLoadStart();
+        getPullToRefreshLayout().setRefreshing(true);
+    }
+
+    @Override
     public Result<List<Article>> onLoadInBackground() throws Exception {
         String keyword = mSearchView.getQuery().toString();
         Response<Result<List<Article>>> response = API.getSearchResult(getNextPage(), keyword).execute();

@@ -16,6 +16,7 @@
 
 package io.daza.app.ui;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -31,6 +32,7 @@ import org.greenrobot.eventbus.EventBus;
 import io.daza.app.R;
 import io.daza.app.api.ApiClient;
 import io.daza.app.event.LoginStatusChangedEvent;
+import io.daza.app.handler.ErrorHandler;
 import io.daza.app.model.Result;
 import io.daza.app.model.User;
 import io.daza.app.ui.base.BaseActivity;
@@ -51,6 +53,7 @@ public class LoginActivity extends BaseActivity {
     private Button mBtnSubmit;
 
     private Validator mValidator = new Validator();
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +62,10 @@ public class LoginActivity extends BaseActivity {
 
         mEdtEmail.setText("lijy91@foxmail.com");
         mEdtPassword.setText("7t2U9P8q99jg");
+
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("登录中...");
+        mProgressDialog.setCancelable(false);
 
         mValidator.add(Rule.with(mEdtEmail).required().email());
         mValidator.add(Rule.with(mEdtPassword).required().minLength(6).maxLength(32));
@@ -79,10 +86,15 @@ public class LoginActivity extends BaseActivity {
 
             Call<Result<User>> call = API.login(email, password);
 
+            mProgressDialog.show();
             call.enqueue(new Callback<Result<User>>() {
                 @Override
                 public void onResponse(Call<Result<User>> call, Response<Result<User>> response) {
+                    mProgressDialog.dismiss();
                     if (response.isSuccessful()) {
+                        if (new ErrorHandler(LoginActivity.this).handleErrorIfNeed(response.body())) {
+                            return;
+                        }
                         Result<User> result = response.body();
                         if (result.isSuccessful()) {
                             User user = result.getData();
@@ -97,7 +109,8 @@ public class LoginActivity extends BaseActivity {
 
                 @Override
                 public void onFailure(Call<Result<User>> call, Throwable t) {
-
+                    mProgressDialog.dismiss();
+                    new ErrorHandler(LoginActivity.this).handleError(t);
                 }
             });
         }
