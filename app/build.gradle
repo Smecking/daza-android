@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'im.fir.plugin.gradle'
 apply plugin: 'icon-version'
 apply plugin: 'com.growingio.android'
 
@@ -21,6 +22,21 @@ android {
         resValue("string", "growingio_url_scheme", GROWING_URL_SCHEME)
         resValue("string", "yunba_appkey", YUNBA_APPKEY)
         resValue("string", "bughd_key", BUGHD_KEY)
+    }
+    signingConfigs {
+        release {
+            try {
+                // Define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties
+                // (Only where you do release builds; do NOT commit those into version control.)
+                storeFile file(KEYSTORE_FILE)
+                storePassword KEYSTORE_PASSWORD
+                keyAlias KEY_ALIAS
+                keyPassword KEY_PASSWORD
+            }
+            catch (ex) {
+                logger.warning('NB: For release builds, you must define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.')
+            }
+        }
     }
     buildTypes {
         release {
@@ -59,6 +75,29 @@ android {
         exclude 'META-INF/ASL2.0'
         exclude 'AndroidManifest.xml'
     }
+    productFlavors {
+        fi {
+            buildConfigField 'String', 'CHANNEL', '"firim"'
+        }
+        gp {
+            buildConfigField 'String', 'CHANNEL', '"GooglePlay"'
+        }
+        qq {
+            buildConfigField 'String', 'CHANNEL', '"QQ"'
+        }
+        db {
+            buildConfigField 'String', 'CHANNEL', '"Baidu"'
+        }
+        hw {
+            buildConfigField 'String', 'CHANNEL', '"Huawei"'
+        }
+        xm {
+            buildConfigField 'String', 'CHANNEL', '"Xiaomi"'
+        }
+        wdj {
+            buildConfigField 'String', 'CHANNEL', '"Wandoujia"'
+        }
+    }
 }
 
 dependencies {
@@ -91,7 +130,9 @@ dependencies {
 retrolambda {
     javaVersion JavaVersion.VERSION_1_7
 }
-
+fir {
+    apiToken FIR_API_TOKEN
+}
 iconVersionConfig {
     fontSize = 10
     textColor = [0, 255, 0, 255] // [r, g, b, a]

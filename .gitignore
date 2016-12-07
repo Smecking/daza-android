@@ -41,3 +41,4 @@ captures/
 *.jks
 
 app/gradle.properties
+app/gradle.properties

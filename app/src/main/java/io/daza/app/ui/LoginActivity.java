@@ -60,9 +60,6 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mEdtEmail.setText("lijy91@foxmail.com");
-        mEdtPassword.setText("7t2U9P8q99jg");
-
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("登录中...");
         mProgressDialog.setCancelable(false);

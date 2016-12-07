@@ -26,8 +26,8 @@ import com.growingio.android.sdk.collection.GrowingIO;
 import org.blankapp.app.Application;
 
 import im.fir.sdk.FIR;
+import io.daza.app.BuildConfig;
 import io.daza.app.util.Auth;
-import io.yunba.android.core.YunBaService;
 import io.yunba.android.manager.YunBaManager;
 
 public class AppContext extends Application {
@@ -51,7 +51,7 @@ public class AppContext extends Application {
         GrowingIO.startWithConfiguration(this, new Configuration()
                 .useID()
                 .trackAllFragments()
-                .setChannel("GooglePlay"));
+                .setChannel(BuildConfig.CHANNEL));
 
         // 初始化 BugHD
         FIR.init(this);
