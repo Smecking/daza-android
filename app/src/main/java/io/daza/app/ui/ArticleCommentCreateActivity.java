@@ -80,7 +80,7 @@ public class ArticleCommentCreateActivity extends BaseActivity {
             API.createArticleComment(mArticleId, content).enqueue(new Callback<Result<ArticleComment>>() {
                 @Override
                 public void onResponse(Call<Result<ArticleComment>> call, Response<Result<ArticleComment>> response) {
-                    if (new ErrorHandler(ArticleCommentCreateActivity.this).handleErrorIfNeed(response.body())) {
+                    if (new ErrorHandler(ArticleCommentCreateActivity.this).handleErrorIfNeed(response.errorBody())) {
                         return;
                     }
                     if (response.isSuccessful()) {

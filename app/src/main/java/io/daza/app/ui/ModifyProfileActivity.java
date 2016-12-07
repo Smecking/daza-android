@@ -92,10 +92,11 @@ public class ModifyProfileActivity extends BaseActivity {
             API.updateProfile(name, city, website, bio).enqueue(new Callback<Result<User>>() {
                 @Override
                 public void onResponse(Call<Result<User>> call, Response<Result<User>> response) {
-                    if (new ErrorHandler(ModifyProfileActivity.this).handleErrorIfNeed(response.body())) {
+                    if (new ErrorHandler(ModifyProfileActivity.this).handleErrorIfNeed(response.errorBody())) {
                         return;
                     }
                     if (response.isSuccessful()) {
+                        Auth.user(response.body().getData());
                         finish();
                     }
                 }

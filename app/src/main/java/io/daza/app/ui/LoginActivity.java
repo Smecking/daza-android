@@ -92,7 +92,7 @@ public class LoginActivity extends BaseActivity {
                 public void onResponse(Call<Result<User>> call, Response<Result<User>> response) {
                     mProgressDialog.dismiss();
                     if (response.isSuccessful()) {
-                        if (new ErrorHandler(LoginActivity.this).handleErrorIfNeed(response.body())) {
+                        if (new ErrorHandler(LoginActivity.this).handleErrorIfNeed(response.errorBody())) {
                             return;
                         }
                         Result<User> result = response.body();

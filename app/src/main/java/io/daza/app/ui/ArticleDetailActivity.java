@@ -37,6 +37,7 @@ import io.daza.app.handler.ErrorHandler;
 import io.daza.app.model.Article;
 import io.daza.app.model.Model;
 import io.daza.app.model.Result;
+import io.daza.app.util.Auth;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -116,10 +117,14 @@ public class ArticleDetailActivity extends InAppBrowserActivity {
                 if (mArticle == null) {
                     return;
                 }
+                if (!Auth.check()) {
+                    Intent intent = new Intent(ArticleDetailActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
                 API.voteArticle(mArticleId, "up").enqueue(new Callback<Result>() {
                     @Override
                     public void onResponse(Call<Result> call, Response<Result> response) {
-                        if (new ErrorHandler(ArticleDetailActivity.this).handleErrorIfNeed(response.body())) {
+                        if (new ErrorHandler(ArticleDetailActivity.this).handleErrorIfNeed(response.errorBody())) {
                             return;
                         }
                         if (response.isSuccessful()) {

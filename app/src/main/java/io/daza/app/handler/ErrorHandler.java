@@ -4,12 +4,16 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import io.daza.app.R;
 import io.daza.app.model.Error;
 import io.daza.app.model.Result;
+import okhttp3.ResponseBody;
 
 public class ErrorHandler {
 
@@ -19,7 +23,17 @@ public class ErrorHandler {
         this.mContext = content;
     }
 
-    public boolean handleErrorIfNeed(Result result) {
+    public boolean handleErrorIfNeed(ResponseBody errorBody) {
+        if (errorBody == null) {
+            return false;
+        }
+        Result result = null;
+        try {
+            Gson gson = new Gson();
+            result = gson.fromJson(errorBody.string(), Result.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (result != null && !result.isSuccessful()) {
             String message = "发生异常：";
 

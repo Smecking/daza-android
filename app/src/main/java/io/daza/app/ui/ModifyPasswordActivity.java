@@ -78,7 +78,7 @@ public class ModifyPasswordActivity extends BaseActivity {
             API.modifyPassword(oldPassword, newPassword).enqueue(new Callback<Result>() {
                 @Override
                 public void onResponse(Call<Result> call, Response<Result> response) {
-                    if (new ErrorHandler(ModifyPasswordActivity.this).handleErrorIfNeed(response.body())) {
+                    if (new ErrorHandler(ModifyPasswordActivity.this).handleErrorIfNeed(response.errorBody())) {
                         return;
                     }
                     if (response.isSuccessful()) {

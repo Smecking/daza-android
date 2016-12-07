@@ -104,7 +104,7 @@ public class HomeInboxFragment extends
             API.markAsRead().enqueue(new Callback<Result>() {
                 @Override
                 public void onResponse(Call<Result> call, Response<Result> response) {
-                    if (new ErrorHandler(getActivity()).handleErrorIfNeed(response.body())) {
+                    if (new ErrorHandler(getActivity()).handleErrorIfNeed(response.errorBody())) {
                         return;
                     }
                     if (response.isSuccessful()) {

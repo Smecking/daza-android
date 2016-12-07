@@ -194,7 +194,7 @@ public class TopicDetailActivity extends BaseListActivity<BaseViewHolder, Articl
         API.subscribeTopic(topic.getId()).enqueue(new Callback<Result<Topic>>() {
             @Override
             public void onResponse(Call<Result<Topic>> call, Response<Result<Topic>> response) {
-                if (new ErrorHandler(TopicDetailActivity.this).handleErrorIfNeed(response.body())) {
+                if (new ErrorHandler(TopicDetailActivity.this).handleErrorIfNeed(response.errorBody())) {
                     return;
                 }
                 if (response.isSuccessful()) {

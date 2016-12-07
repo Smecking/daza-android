@@ -91,7 +91,7 @@ public class NotificationSettingsActivity extends BaseActivity {
                         notificationMention).enqueue(new Callback<Result<List<UserConfig>>>() {
                     @Override
                     public void onResponse(Call<Result<List<UserConfig>>> call, Response<Result<List<UserConfig>>> response) {
-                        if (new ErrorHandler(getActivity()).handleErrorIfNeed(response.body())) {
+                        if (new ErrorHandler(getActivity()).handleErrorIfNeed(response.errorBody())) {
                             return;
                         }
                         if (response.isSuccessful()) {
