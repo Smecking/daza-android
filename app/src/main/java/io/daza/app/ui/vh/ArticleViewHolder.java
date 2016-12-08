@@ -22,13 +22,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.NativeExpressAdView;
 
 import org.blankapp.util.ViewUtils;
 
 import java.util.Locale;
 
+import io.daza.app.BuildConfig;
 import io.daza.app.R;
 import io.daza.app.model.Article;
+import io.daza.app.util.AdUtils;
 import io.daza.app.util.DateUtils;
 import io.daza.app.util.Thumbnail;
 
@@ -42,6 +46,8 @@ public class ArticleViewHolder extends BaseViewHolder {
     private TextView mTvCommentCount;
     private TextView mTvViewCount;
 
+    private NativeExpressAdView mNativeExpressAdView;
+
     public ArticleViewHolder(View itemView) {
         super(itemView);
         mIvImage = (ImageView) itemView.findViewById(R.id.iv_image);
@@ -54,6 +60,17 @@ public class ArticleViewHolder extends BaseViewHolder {
     }
 
     public void bind(Article data) {
+        if ("ad".equals(data.getType())) {
+            if (mNativeExpressAdView == null) {
+                mNativeExpressAdView = (NativeExpressAdView) itemView.findViewById(R.id.nav_item_ad);
+            }
+            AdRequest.Builder builder = new AdRequest.Builder();
+            if (BuildConfig.DEBUG) {
+                builder.addTestDevice(AdUtils.getTestDeviceId(itemView.getContext()));
+            }
+            mNativeExpressAdView.loadAd(builder.build());
+            return;
+        }
         Glide
                 .with(itemView.getContext())
                 .load(new Thumbnail(data.getImage_url()).small())

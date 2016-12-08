@@ -22,6 +22,7 @@ android {
         resValue("string", "growingio_url_scheme", GROWING_URL_SCHEME)
         resValue("string", "yunba_appkey", YUNBA_APPKEY)
         resValue("string", "bughd_key", BUGHD_KEY)
+        resValue("string", "banner_ad_unit_id", BANNER_AD_UNIT_ID)
     }
     signingConfigs {
         release {
@@ -85,7 +86,7 @@ android {
         qq {
             buildConfigField 'String', 'CHANNEL', '"QQ"'
         }
-        db {
+        bd {
             buildConfigField 'String', 'CHANNEL', '"Baidu"'
         }
         hw {
@@ -124,6 +125,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'im.fir:fir-sdk:latest.integration@aar'
     compile 'com.growingio.android:vds-android-agent:0.9.100@aar'
+    compile 'com.google.firebase:firebase-ads:9.6.1'
     testCompile 'junit:junit:4.12'
 }
 
@@ -139,3 +141,5 @@ iconVersionConfig {
     verticalLinePadding = 4 // vertical gap between each line of text
     backgroundOverlayColor = [255, 0, 0, 255]  // [r, g, b, a]
 }
+
+apply plugin: 'com.google.gms.google-services'

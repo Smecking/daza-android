@@ -21,11 +21,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="YUNBA_APPKEY"
             android:value="@string/yunba_appkey" />
-
         <meta-data
             android:name="BUG_HD_SDK_GENERAL_KEY"
             android:value="@string/bughd_key" />
@@ -40,6 +38,7 @@
             </intent-filter>
             <intent-filter>
                 <data android:scheme="@string/growingio_url_scheme" />
+
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -75,7 +74,6 @@
                 <data
                     android:host="articles"
                     android:scheme="daza" />
-
             </intent-filter>
         </activity>
         <activity
@@ -131,7 +129,6 @@
                 <data
                     android:host="topics"
                     android:scheme="daza" />
-
             </intent-filter>
         </activity>
         <activity
@@ -146,7 +143,6 @@
                 <data
                     android:host="users"
                     android:scheme="daza" />
-
             </intent-filter>
         </activity>
         <activity
@@ -162,12 +158,15 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <receiver android:name="io.daza.app.receiver.NotificationReceiver">
+        <receiver android:name=".receiver.NotificationReceiver">
             <intent-filter>
                 <action android:name="io.yunba.android.MESSAGE_RECEIVED_ACTION" />
+
                 <category android:name="io.daza.app" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".ui.RegisterActivity"></activity>
     </application>
 
 </manifest>

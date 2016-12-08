@@ -38,6 +38,9 @@ import static io.daza.app.api.ApiClient.API;
 
 public class ArticlesFragment extends BaseListFragment<ArticleViewHolder, Article, Result<List<Article>>> {
 
+    private static final int VIEW_TYPE_AD = 0;
+    private static final int VIEW_TYPE_ITEM = 1;
+
     private Category mCategory;
 
     public ArticlesFragment() {
@@ -74,7 +77,8 @@ public class ArticlesFragment extends BaseListFragment<ArticleViewHolder, Articl
 
     @Override
     public ArticleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_articles_list_item, parent, false);
+        int layoutId = viewType == VIEW_TYPE_AD ? R.layout.fragment_articles_list_ad_item : R.layout.fragment_articles_list_item;
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
         return new ArticleViewHolder(itemView);
     }
 
@@ -83,6 +87,14 @@ public class ArticlesFragment extends BaseListFragment<ArticleViewHolder, Articl
         super.onBindViewHolder(holder, position);
         Article data = getItemsSource().get(position);
         holder.bind(data);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if ("ad".equals(getItem(position).getType())) {
+            return VIEW_TYPE_AD;
+        }
+        return VIEW_TYPE_ITEM;
     }
 
     @Override
@@ -99,6 +111,12 @@ public class ArticlesFragment extends BaseListFragment<ArticleViewHolder, Articl
                 getItemsSource().clear();
             }
             getItemsSource().addAll(data.getData());
+            // 两页出现一次广告
+            if (data.getPagination().getCurrent_page() % 2 == 0) {
+                getItemsSource().add(new Article() {{
+                    setType("ad");
+                }});
+            }
         }
         getAdapter().notifyDataSetChanged();
         super.onRefreshComplete();

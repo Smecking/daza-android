@@ -88,10 +88,10 @@ public class LoginActivity extends BaseActivity {
                 @Override
                 public void onResponse(Call<Result<User>> call, Response<Result<User>> response) {
                     mProgressDialog.dismiss();
+                    if (new ErrorHandler(LoginActivity.this).handleErrorIfNeed(response.errorBody())) {
+                        return;
+                    }
                     if (response.isSuccessful()) {
-                        if (new ErrorHandler(LoginActivity.this).handleErrorIfNeed(response.errorBody())) {
-                            return;
-                        }
                         Result<User> result = response.body();
                         if (result.isSuccessful()) {
                             User user = result.getData();
