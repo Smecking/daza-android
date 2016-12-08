@@ -40,6 +40,12 @@ import retrofit2.http.Query;
 public interface Api {
 
     @FormUrlEncoded
+    @POST("/account/register")
+    Call<Result<User>> register(@Field("username") String username,
+                                @Field("email") String email,
+                                @Field("password") String password);
+
+    @FormUrlEncoded
     @POST("/account/login")
     Call<Result<User>> login(@Field("email") String email,
                              @Field("password") String password);

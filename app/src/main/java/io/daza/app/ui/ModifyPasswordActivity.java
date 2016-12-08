@@ -39,7 +39,6 @@ import static io.daza.app.api.ApiClient.API;
 
 public class ModifyPasswordActivity extends BaseActivity {
 
-
     @ViewById(R.id.edt_old_password)
     private EditText mEdtOldPassword;
     @ViewById(R.id.edt_new_password)
